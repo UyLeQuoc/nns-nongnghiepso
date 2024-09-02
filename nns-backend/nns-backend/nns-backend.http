@@ -1,0 +1,6 @@
+@nns_backend_HostAddress = http://localhost:5129
+
+GET {{nns_backend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

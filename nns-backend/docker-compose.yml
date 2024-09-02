@@ -1,0 +1,29 @@
+version: '3.4'
+
+services:
+  nns-backend:
+    image: ${DOCKER_REGISTRY-}nnsbackend
+    container_name: nns-backend
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "DatabaseSettings:DefaultConnection=Server=nss-database;Database=nss-database;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=true"
+    build:
+      context: .
+      dockerfile: nns-backend/Dockerfile
+    ports:
+      - "9999:5000"
+    depends_on:
+      - nss-database
+
+  nss-database:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: nss-database
+    restart: always
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "YourStrong!Passw0rd"
+    ports:
+      - "1433:1433"
+    volumes:
+      - ./.containers/nongnghiepso-db:/var/opt/mssql/data
+      - ./bk:/var/opt/mssql/backup
