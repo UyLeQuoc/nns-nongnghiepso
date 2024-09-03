@@ -3,8 +3,6 @@
 import blogApi, { Blog } from '@/apis/blogApi'
 import BackgroundAnimation from '@/components/background-animation'
 import NavBar from '@/components/nav-bar'
-import { Button } from '@/components/ui/button'
-import { TractorIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 export default function BlogsPage() {
