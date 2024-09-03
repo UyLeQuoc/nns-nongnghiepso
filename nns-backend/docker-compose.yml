@@ -6,7 +6,7 @@ services:
     container_name: nns-backend
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - "DatabaseSettings:DefaultConnection=Server=nss-database;Database=nss-database;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=true"
+      - "DatabaseSettings:DefaultConnection=Server=nns-database;Database=nns-database;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=true"
     build:
       context: .
       dockerfile: nns-backend/Dockerfile
@@ -14,11 +14,11 @@ services:
       - "8080:8080"
       - "8081:8081"
     depends_on:
-      - nss-database
+      - nns-database
 
-  nss-database:
+  nns-database:
     image: mcr.microsoft.com/mssql/server:2019-latest
-    container_name: nss-database
+    container_name: nns-database
     restart: always
     environment:
       ACCEPT_EULA: "Y"

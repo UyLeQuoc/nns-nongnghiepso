@@ -31,7 +31,7 @@ jobs:
           context: ./nns-backend
           file: ./nns-backend/Dockerfile
           push: true
-          tags: lequocuyit/nss-backend:latest
+          tags: lequocuy/nns-backend:latest
   
   update_server:
       name: Updating prod environment
