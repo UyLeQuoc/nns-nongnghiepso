@@ -1,8 +1,6 @@
-version: '3.4'
-
 services:
   nns-backend:
-    image: ${DOCKER_REGISTRY-}nns-backend:latest
+    image: lequocuy/nns-backend:latest
     container_name: nns-backend
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -24,7 +22,7 @@ services:
       ACCEPT_EULA: "Y"
       MSSQL_SA_PASSWORD: "YourStrong!Passw0rd"
     ports:
-      - "1433:1433"
+      - "1434:1434"
     volumes:
       - ./.containers/nongnghiepso-db:/var/opt/mssql/data
       - ./bk:/var/opt/mssql/backup
