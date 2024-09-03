@@ -26,13 +26,13 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: List files in nns-backend
-        run: ls -la ./nns-backend
+        run: ls -la ./nns-backend/nns-backend
 
       - name: Build api image
         uses: docker/build-push-action@v2
         with:
           context: ./nns-backend
-          file: ./Dockerfile
+          file: ./nns-backend/Dockerfile
           push: true
           tags: lequocuy/nns-backend:latest
   
