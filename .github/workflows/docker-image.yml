@@ -31,7 +31,7 @@ jobs:
       - name: Build api image
         uses: docker/build-push-action@v2
         with:
-          context: ./nns-backend/nns-backend
+          context: .
           file: ./nns-backend/nns-backend/Dockerfile
           push: true
           tags: lequocuy/nns-backend:latest
