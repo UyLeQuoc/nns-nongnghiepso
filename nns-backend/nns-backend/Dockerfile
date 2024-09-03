@@ -10,7 +10,7 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Corrected COPY path to match your deeply nested directory structure
-COPY ["nns-backend/nns-backend/nns-backend.csproj", "nns-backend/"]
+COPY ["nns-backend/nns-backend.csproj", "nns-backend/"]
 RUN dotnet restore "./nns-backend/nns-backend.csproj"
 
 # Copy the entire project and build it
