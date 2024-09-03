@@ -1,113 +1,130 @@
-import Image from "next/image";
+import BackgroundAnimation from "@/components/background-animation";
+import { Button } from "@/components/ui/button";
+import { TractorIcon } from "lucide-react";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <div className="w-full overflow-x-hidden">
+      <BackgroundAnimation />
+      <div className="container mx-auto">
+      <header className="flex items-center justify-between p-4 text-[#DCFFD7]">
+        <div className="flex items-center space-x-2 cursor-pointer">
+          <TractorIcon className="w-8 h-8 text-[#DCFFD7]" />
+          <span className="text-2xl font-bold">NNS</span>
         </div>
+        <nav className="flex items-center space-x-6">
+          <Link href="#" className="text-lg font-medium" prefetch={false}>
+            Trang chủ
+          </Link>
+          <Link href="#" className="text-lg font-medium" prefetch={false}>
+            Giá cả
+          </Link>
+          <Link href="#" className="text-lg font-medium" prefetch={false}>
+            Các đại lý
+          </Link>
+          <Link href="#" className="text-lg font-medium" prefetch={false}>
+            Tin tức
+          </Link>
+          <Link href="#" className="text-lg font-medium" prefetch={false}>
+            Về chúng tôi
+          </Link>
+        </nav>
+        <div className="flex items-center space-x-4">
+          <Button className="bg-[#DCFFD7] text-black hover:bg-[#DCFFD7] hover:opacity-60">Đăng nhập</Button>
+          <Button className="bg-[#FAFE44] text-black hover:bg-[#FAFE44] hover:opacity-60">Đăng ký đại lý</Button>
+        </div>
+      </header>
+      <main className="container mx-auto py-12">
+        <section className="mb-12">
+          <div className="flex items-center justify-between gap-2  mb-6">
+            <h2 className="text-3xl font-bold text-[#DCFFD7]">Tin tức mới</h2>
+            <Button variant="default">Xem thêm</Button>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="bg-[#DCFFD7] rounded-lg shadow-md overflow-hidden">
+              <img src="https://tranguyenlieu.vn/upload/elfinder/Topic%2072b/Tin%2035/Doi%20tra%20dep%20nhat%20lam%20dong%2015.jpg" alt="Blog Post 1" className="w-full h-48 object-cover" />
+              <div className="p-4">
+                <h3 className="text-xl font-bold mb-2">Blog Post 1</h3>
+                <p className="text-gray-500 mb-4">This is a caption for Blog Post 1.</p>
+              </div>
+            </div>
+            <div className="bg-[#DCFFD7] rounded-lg shadow-md overflow-hidden">
+              <img src="https://tranguyenlieu.vn/upload/elfinder/Topic%2072b/Tin%2035/Doi%20tra%20dep%20nhat%20lam%20dong%2015.jpg" alt="Blog Post 2" className="w-full h-48 object-cover" />
+              <div className="p-4">
+                <h3 className="text-xl font-bold mb-2">Blog Post 2</h3>
+                <p className="text-gray-500 mb-4">This is a caption for Blog Post 2.</p>
+              </div>
+            </div>
+            <div className="bg-[#DCFFD7] rounded-lg shadow-md overflow-hidden">
+              <img src="https://tranguyenlieu.vn/upload/elfinder/Topic%2072b/Tin%2035/Doi%20tra%20dep%20nhat%20lam%20dong%2015.jpg" alt="Blog Post 3" className="w-full h-48 object-cover" />
+              <div className="p-4">
+                <h3 className="text-xl font-bold mb-2">Blog Post 3</h3>
+                <p className="text-gray-500 mb-4">This is a caption for Blog Post 3.</p>
+              </div>
+            </div>
+            <div className="bg-[#DCFFD7] rounded-lg shadow-md overflow-hidden">
+              <img src="https://tranguyenlieu.vn/upload/elfinder/Topic%2072b/Tin%2035/Doi%20tra%20dep%20nhat%20lam%20dong%2015.jpg" alt="Blog Post 4" className="w-full h-48 object-cover" />
+              <div className="p-4">
+                <h3 className="text-xl font-bold mb-2">Blog Post 4</h3>
+                <p className="text-gray-500 mb-4">This is a caption for Blog Post 4.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section className="mb-12">
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-3xl font-bold">Giá hôm nay</h2>
+              <div className="flex items-center gap-2">
+                <TractorIcon className="w-8 h-8 text-[#1a3a1a]" />
+                <span className="text-2xl font-bold">NNS</span>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="bg-[#f0f8f0] rounded-lg p-6">
+                <h3 className="text-xl font-bold mb-4">Cà phê</h3>
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-3xl font-bold text-[#1a3a1a]">$49.99</span>
+                  <span className="text-sm text-[#1a3a1a] line-through">$59.99</span>
+                  <span className="text-sm text-green-500">-16.67%</span>
+                </div>
+                <button className="bg-[#1a3a1a] text-white rounded-lg px-4 py-2 hover:bg-[#2c5a2c] transition-colors">
+                  Xem lịch sử giá
+                </button>
+              </div>
+              <div className="bg-[#f0f8f0] rounded-lg p-6">
+                <h3 className="text-xl font-bold mb-4">Trà</h3>
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-3xl font-bold text-[#1a3a1a]">$29.99</span>
+                  <span className="text-sm text-[#1a3a1a] line-through">$39.99</span>
+                  <span className="text-sm text-green-500">-25%</span>
+                </div>
+                <button className="bg-[#1a3a1a] text-white rounded-lg px-4 py-2 hover:bg-[#2c5a2c] transition-colors">
+                  Xem lịch sử giá
+                </button>
+              </div>
+              <div className="bg-[#f0f8f0] rounded-lg p-6">
+                <h3 className="text-xl font-bold mb-4">Lúa mì</h3>
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-3xl font-bold text-[#1a3a1a]">$19.99</span>
+                  <span className="text-sm text-[#1a3a1a] line-through">$39.99</span>
+                  <span className="text-sm text-green-500">-20%</span>
+                </div>
+                <button className="bg-[#1a3a1a] text-white rounded-lg px-4 py-2 hover:bg-[#2c5a2c] transition-colors">
+                  Xem lịch sử giá
+                </button>
+              </div>
+              <div className="bg-[#f0f8f0] rounded-lg p-6">
+                  {/* last grid: xem thêm */}
+                  Xem thêm sản phẩm nông nghiệp
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
       </div>
-
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    </div>
   );
 }
