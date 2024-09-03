@@ -24,12 +24,15 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-          
-      - name: Build and push identity migration image
+
+      - name: List files in nns-backend
+        run: ls -la ./nns-backend
+
+      - name: Build api image
         uses: docker/build-push-action@v2
         with:
           context: ./nns-backend
-          file: ./nns-backend/Dockerfile
+          file: ./Dockerfile
           push: true
           tags: lequocuy/nns-backend:latest
   

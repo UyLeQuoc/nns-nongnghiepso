@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   nns-backend:
-    image: ${DOCKER_REGISTRY-}nnsbackend
+    image: ${DOCKER_REGISTRY-}nns-backend:latest
     container_name: nns-backend
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
