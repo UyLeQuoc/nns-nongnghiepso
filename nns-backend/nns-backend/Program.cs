@@ -115,15 +115,17 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(config =>
     {
         // Always keep token after reload or refresh browser
-        config.SwaggerEndpoint("/swagger/v1/swagger.json", "EventZone API v.01");
+        config.SwaggerEndpoint("/swagger/v1/swagger.json", "NongNghiepSo API v.01");
         config.ConfigObject.AdditionalItems.Add("persistAuthorization", "true");
-        config.InjectJavascript("/custom-swagger.js");
+        //config.InjectJavascript("/custom-swagger.js");
     });
     app.ApplyMigrations(logger);
 }
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseCors("CorsPolicyDevelopement");
 
 app.MapControllers();
 

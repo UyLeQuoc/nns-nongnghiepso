@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using nns_backend.Entities;
+using nns_backend.Interfaces;
+using nns_backend.Mapper;
 using nns_backend.Middlewares;
+using nns_backend.Repositories;
 using System.Diagnostics;
 
 namespace nns_backend.DI
@@ -24,12 +27,10 @@ namespace nns_backend.DI
             //services.AddScoped<ICurrentTime, CurrentTime>();
             services.AddSingleton<Stopwatch>();
             services.AddHttpContextAccessor();
-            //services.AddAutoMapper(typeof(MapperConfigProfile).Assembly);
+            services.AddAutoMapper(typeof(ProfileMapper).Assembly);
             //services.AddScoped<IClaimsService, ClaimsService>();
             // add repositories
-
-            // add generic repositories
-
+            services.AddScoped<IBlogRepository, BlogRepository>();
 
             // add signInManager
             services.AddScoped<SignInManager<User>>();

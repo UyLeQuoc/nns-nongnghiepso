@@ -29,9 +29,9 @@ export default function Home() {
       <BackgroundAnimation />
       <div className="container mx-auto">
       <NavBar />
-      <main className="container mx-auto py-12">
+      <main className="container mx-auto py-12 px-2">
         <section className="mb-12">
-          <div className="flex items-center justify-between gap-2  mb-6">
+          <div className="flex items-center justify-between gap-2 mb-6">
             <h2 className="text-3xl font-bold text-[#DCFFD7]">Tin tức mới</h2>
             <Button className="bg-[#DCFFD7] text-[#0F4026] hover:bg-[#DCFFD7] hover:opacity-60"
               onClick={() => router.push("/blogs")}>Xem thêm</Button>

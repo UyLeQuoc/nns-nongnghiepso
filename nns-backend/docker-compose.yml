@@ -11,7 +11,8 @@ services:
       context: .
       dockerfile: nns-backend/Dockerfile
     ports:
-      - "9999:5000"
+      - "8080:8080"
+      - "8081:8081"
     depends_on:
       - nss-database
 
