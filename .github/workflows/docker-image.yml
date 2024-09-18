@@ -48,6 +48,6 @@ jobs:
             username: ${{ secrets.SERVER_USERNAME }}
             password: ${{ secrets.SERVER_PASSWORD }}
             script: |
-              cd nss
+              cd /home/uydev/code/nns
               docker compose pull
               docker compose up -d

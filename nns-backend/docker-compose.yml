@@ -4,13 +4,12 @@ services:
     container_name: nns-backend
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - "DatabaseSettings:DefaultConnection=Server=nns-database;Database=nns-database;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=true"
+      - "ConnectionStrings__DefaultConnection=Server=nns-database;Database=nns-database;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=true"
     build:
       context: .
       dockerfile: nns-backend/Dockerfile
     ports:
-      - "8080:8080"
-      - "8081:8081"
+      - "8082:8080"
     depends_on:
       - nns-database
 
@@ -22,7 +21,7 @@ services:
       ACCEPT_EULA: "Y"
       MSSQL_SA_PASSWORD: "YourStrong!Passw0rd"
     ports:
-      - "1434:1434"
+      - "1435:1433"
     volumes:
       - ./.containers/nongnghiepso-db:/var/opt/mssql/data
       - ./bk:/var/opt/mssql/backup

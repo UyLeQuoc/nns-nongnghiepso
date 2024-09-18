@@ -1,11 +1,12 @@
 "use client"
 
 import blogApi, { Blog } from "@/apis/blogApi";
+import AveragePriceByProduct from "@/components/AveragePriceByProduct";
+import AveragePriceByProductAndType from "@/components/AveragePriceByProductAndType";
 import BackgroundAnimation from "@/components/background-animation";
 import NavBar from "@/components/nav-bar";
 import { Button } from "@/components/ui/button";
 import { TractorIcon } from "lucide-react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -101,6 +102,7 @@ export default function Home() {
                   <span className="text-lg font-bold">Xem thêm sản phẩm nông nghiệp</span>
                 </div>
               </div>
+              <AveragePriceByProduct/>
             </div>
           </section>
       </main>
