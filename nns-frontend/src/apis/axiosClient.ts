@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const axiosClient = axios.create({
   // baseURL: 'https://localhost:8081', // Your API base URL
-  baseURL: 'http://103.179.185.123:8080',
+  baseURL: 'https://nongnghiepso.uydev.id.vn',
   headers: {
     'Content-Type': 'application/json',
   },
