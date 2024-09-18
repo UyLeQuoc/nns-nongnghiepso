@@ -14,12 +14,12 @@ namespace nns_backend.Repositories
 
         public async Task<List<AgriculturalProduct>> GetAgriculturalProductsAsync()
         {
-            return await _context.AgriculturalProducts.ToListAsync();
+            return await _context.AgriculturalProducts.Include(x => x.ProductTypes).ToListAsync();
         }
 
         public async Task<AgriculturalProduct?> GetAgriculturalProductByIdAsync(int id)
         {
-            return await _context.AgriculturalProducts.FindAsync(id);
+            return await _context.AgriculturalProducts.Include(x => x.ProductTypes).FirstOrDefaultAsync(y => y.Id == id);
         }
 
         public async Task<AgriculturalProduct> CreateAgriculturalProductAsync(AgriculturalProduct agriculturalProduct)

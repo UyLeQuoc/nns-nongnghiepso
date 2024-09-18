@@ -16,6 +16,7 @@
         public string? ImageUrl { get; set; }
         public decimal? BeginPrice { get; set; }
         public DateTime CreatedAt { get; set; }
+        public List<ProductTypeResponseDTO> productTypes { get; set; }
     }
 
     public class AgriculturalProductUpdateDTO

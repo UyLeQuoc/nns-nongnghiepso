@@ -3,19 +3,17 @@
 import React, { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { PlusIcon, ChevronDownIcon, ChevronUpIcon, PencilIcon, TrashIcon } from "lucide-react"
+import { PlusIcon, PencilIcon, TrashIcon } from "lucide-react"
 import agriculturalProductApi, { AgriculturalProduct, ProductType } from "@/apis/agriculturalProductApi"
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { toast } from "@/hooks/use-toast"
 import { Toaster } from "@/components/ui/toaster"
 import { uploadImage } from "@/lib/firebase"
+import productTypeApi from "@/apis/productTypeApi"
 
 export default function AgriculturalProductsManagementPage() {
   const [agriculturalProducts, setAgriculturalProducts] = useState<AgriculturalProduct[]>([])
-  const [expandedProduct, setExpandedProduct] = useState<number | null>(null)
-  const [productTypes, setProductTypes] = useState<{ [key: number]: ProductType[] }>({})
-  const [openDialog, setOpenDialog] = useState(false)
   const [selectedProduct, setSelectedProduct] = useState<AgriculturalProduct | null>(null)
   const [formData, setFormData] = useState({
     name: "",
@@ -26,6 +24,10 @@ export default function AgriculturalProductsManagementPage() {
   const [imageFile, setImageFile] = useState<File | null>(null) // Quản lý file ảnh
   const [imagePreview, setImagePreview] = useState<string | null>(null) // Xem trước ảnh
 
+  // State cho ProductType CRUD
+  const [selectedProductType, setSelectedProductType] = useState<ProductType | null>(null)
+  const [openProductTypeDialog, setOpenProductTypeDialog] = useState(false)
+
   useEffect(() => {
     fetchAgriculturalProducts()
   }, [])
@@ -33,18 +35,6 @@ export default function AgriculturalProductsManagementPage() {
   const fetchAgriculturalProducts = async () => {
     const data = await agriculturalProductApi.getAll()
     setAgriculturalProducts(data)
-  }
-
-  const handleExpandProduct = async (productId: number) => {
-    if (expandedProduct === productId) {
-      setExpandedProduct(null)
-    } else {
-      if (!productTypes[productId]) {
-        const types = await agriculturalProductApi.getProductTypesByAgriculturalProductId(productId)
-        setProductTypes((prev) => ({ ...prev, [productId]: types }))
-      }
-      setExpandedProduct(productId)
-    }
   }
 
   const handleDeleteProduct = async (id: number) => {
@@ -70,11 +60,11 @@ export default function AgriculturalProductsManagementPage() {
       setFormData({ name: "", description: "", imageUrl: "", beginPrice: 0 })
       setImagePreview(null) // Xóa ảnh preview khi tạo mới
     }
-    setOpenDialog(true)
+    setOpenProductTypeDialog(true)
   }
 
   const handleCloseDialog = () => {
-    setOpenDialog(false)
+    setOpenProductTypeDialog(false)
     setImagePreview(null) // Xóa ảnh preview khi đóng dialog
   }
 
@@ -102,7 +92,7 @@ export default function AgriculturalProductsManagementPage() {
           title: "Image uploaded successfully",
           description: "The image has been uploaded successfully",
         })
-      } catch (error:any) {
+      } catch (error: any) {
         toast({
           title: "Image upload failed",
           description: error.message,
@@ -139,6 +129,37 @@ export default function AgriculturalProductsManagementPage() {
     fetchAgriculturalProducts()
   }
 
+  // Mở dialog để chỉnh sửa ProductType
+  const handleOpenProductTypeDialog = (productType: ProductType | null = null) => {
+    setSelectedProductType(productType)
+    setOpenProductTypeDialog(true)
+  }
+
+  // Lưu ProductType
+  const handleSaveProductType = async () => {
+    if (selectedProductType) {
+      // Update ProductType
+      await productTypeApi.update(selectedProductType.id, selectedProductType)
+      toast({
+        title: "Product Type updated successfully",
+        description: "The product type has been updated successfully",
+      })
+    } else {
+      // Create new ProductType
+      await productTypeApi.create({
+        name: selectedProductType!.name || "",
+        description: selectedProductType!.description || "",
+        agriculturalProductId: selectedProduct?.id || 0,
+      })
+      toast({
+        title: "Product Type created successfully",
+        description: "The product type has been created successfully",
+      })
+    }
+    setOpenProductTypeDialog(false)
+    if (selectedProduct) fetchAgriculturalProducts() // Cập nhật danh sách sản phẩm
+  }
+
   return (
     <div className="container mx-auto p-4">
       <Toaster />
@@ -159,17 +180,6 @@ export default function AgriculturalProductsManagementPage() {
                   <Button
                     variant="outline"
                     size="icon"
-                    onClick={() => handleExpandProduct(product.id)}
-                  >
-                    {expandedProduct === product.id ? (
-                      <ChevronUpIcon className="w-4 h-4" />
-                    ) : (
-                      <ChevronDownIcon className="w-4 h-4" />
-                    )}
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="icon"
                     onClick={() => handleOpenDialog(product)}
                   >
                     <PencilIcon className="w-4 h-4" />
@@ -183,84 +193,84 @@ export default function AgriculturalProductsManagementPage() {
               )}
               <p className="text-sm text-gray-600 mb-2">{product.description}</p>
               <p className="font-semibold">Price: {product.beginPrice} VND/Kg</p>
-              {expandedProduct === product.id && (
-                <div className="mt-4">
-                  <h3 className="text-lg font-semibold mb-2">Product Types</h3>
-                  <ul className="space-y-2">
-                    {productTypes[product.id]?.map((type) => (
-                      <li key={type.id} className="bg-gray-100 p-2 rounded">
-                        <p className="font-medium">{type.name}</p>
-                        <p className="text-sm text-gray-600">{type.description}</p>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </CardContent>
-            <CardFooter className="flex justify-between">
-              <Button variant="outline">
+
+              {/* Hiển thị tất cả Product Types */}
+              <h3 className="text-lg font-semibold mb-2 mt-4">Product Types</h3>
+              <ul className="space-y-2">
+                {product?.productTypes?.map((type) => (
+                  <li key={type.id} className="bg-gray-100 p-2 rounded flex justify-between">
+                    <div>
+                      <p className="font-medium">{type.name}</p>
+                      <p className="text-sm text-gray-600">{type.description}</p>
+                    </div>
+                    <div className="flex space-x-2">
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={() => handleOpenProductTypeDialog(type)}
+                      >
+                        <PencilIcon className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        size="icon"
+                        onClick={async () => {
+                          await productTypeApi.delete(type.id)
+                          toast({
+                            title: "Product Type deleted",
+                            description: "The product type has been deleted successfully",
+                          })
+                          fetchAgriculturalProducts() // Cập nhật danh sách sản phẩm
+                        }}
+                      >
+                        <TrashIcon className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handleOpenProductTypeDialog(null)}
+                className="mt-4"
+              >
                 <PlusIcon className="w-4 h-4 mr-2" />
-                <span>Add Product Type</span>
+                Add Product Type
               </Button>
-            </CardFooter>
+            </CardContent>
           </Card>
         ))}
       </div>
 
-      {/* Dialog for creating/updating products */}
-      <Dialog open={openDialog} onOpenChange={setOpenDialog}>
+      {/* Dialog for creating/updating AgriculturalProduct */}
+      <Dialog open={openProductTypeDialog} onOpenChange={setOpenProductTypeDialog}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{selectedProduct ? "Update Product" : "Create Product"}</DialogTitle>
+            <DialogTitle>{selectedProductType ? "Update Product Type" : "Create Product Type"}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-2">
             <Input
               id="name"
               name="name"
-              value={formData.name}
-              onChange={handleFormChange}
-              placeholder="Enter product name"
+              value={selectedProductType?.name || ""}
+              onChange={(e) => setSelectedProductType({ ...selectedProductType!, name: e.target.value })}
+              placeholder="Enter product type name"
               className="w-full"
             />
             <Input
               id="description"
               name="description"
-              value={formData.description}
-              onChange={handleFormChange}
-              placeholder="Enter product description"
-              className="w-full"
-            />
-            <Input
-              id="imageUrl"
-              name="imageUrl"
-              value={formData.imageUrl}
-              placeholder="Enter image URL"
-              className="w-full hidden"
-              readOnly
-            />
-            <Input
-              id="imageFile"
-              type="file"
-              onChange={handleImageChange} // Bắt sự kiện chọn file
-              className="w-full"
-            />
-            {imagePreview && (
-              <img src={imagePreview} alt="Preview" className="mt-4 w-full h-40 object-cover" />
-            )}
-            <Input
-              id="beginPrice"
-              name="beginPrice"
-              type="number"
-              value={formData.beginPrice}
-              onChange={handleFormChange}
-              placeholder="Enter price per Kg"
+              value={selectedProductType?.description || ""}
+              onChange={(e) => setSelectedProductType({ ...selectedProductType!, description: e.target.value })}
+              placeholder="Enter product type description"
               className="w-full"
             />
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={handleCloseDialog}>Cancel</Button>
-            <Button variant="default" onClick={handleSaveProduct}>
-              {selectedProduct ? "Update Product" : "Create Product"}
+            <Button variant="outline" onClick={() => setOpenProductTypeDialog(false)}>Cancel</Button>
+            <Button variant="default" onClick={handleSaveProductType}>
+              {selectedProductType ? "Update Product Type" : "Create Product Type"}
             </Button>
           </DialogFooter>
         </DialogContent>

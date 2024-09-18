@@ -7,6 +7,7 @@ export interface AgriculturalProduct {
   imageUrl: string;
   beginPrice: number;
   createdAt: string;
+  productTypes?: ProductType[] | [];
 }
 
 export interface ProductType {
@@ -38,7 +39,7 @@ const agriculturalProductApi = {
   },
 
   getProductTypesByAgriculturalProductId: async (id: number): Promise<ProductType[]> => {
-    const response = await axiosClient.get<ProductType[]>(`/AgriculturalProduct/${id}/ProductTypes`);
+    const response = await axiosClient.get<ProductType[]>(`/AgriculturalProduct/${id}/product-types`);
     return response.data;
   }
 };
