@@ -75,7 +75,7 @@ export default function AdminLayout({
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
-                href="#"
+                href="/admin/blogs"
                 className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
               >
                 <PaperclipIcon className="h-5 w-5" />
@@ -87,14 +87,14 @@ export default function AdminLayout({
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
-                href="#"
+                href="/admin/agricultural-products"
                 className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
               >
                 <Package className="h-5 w-5" />
-                <span className="sr-only">Products</span>
+                <span className="sr-only">Nông Sản</span>
               </Link>
             </TooltipTrigger>
-            <TooltipContent side="right">Products</TooltipContent>
+            <TooltipContent side="right">Nông Sản</TooltipContent>
           </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -103,10 +103,10 @@ export default function AdminLayout({
                 className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
               >
                 <Users2 className="h-5 w-5" />
-                <span className="sr-only">Customers</span>
+                <span className="sr-only">Đại lý</span>
               </Link>
             </TooltipTrigger>
-            <TooltipContent side="right">Customers</TooltipContent>
+            <TooltipContent side="right">Đại lý</TooltipContent>
           </Tooltip>
         </nav>
         {/* <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
@@ -161,10 +161,10 @@ export default function AdminLayout({
                   className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
                 >
                   <Package className="h-5 w-5" />
-                  Products
+                  Đại lý
                 </Link>
                 <Link
-                  href="#"
+                  href="/admin/agricultural-products"
                   className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
                 >
                   <Users2 className="h-5 w-5" />
@@ -183,7 +183,7 @@ export default function AdminLayout({
               <BreadcrumbSeparator />
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
-                  <Link href="#">Blogs</Link>
+                  <Link href="/admin/blogs">Blogs</Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
             </BreadcrumbList>

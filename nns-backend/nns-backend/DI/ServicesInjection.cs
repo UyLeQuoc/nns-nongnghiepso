@@ -31,6 +31,8 @@ namespace nns_backend.DI
             //services.AddScoped<IClaimsService, ClaimsService>();
             // add repositories
             services.AddScoped<IBlogRepository, BlogRepository>();
+            services.AddScoped<IAgriculturalProductRepository, AgriculturalProductRepository>();
+            services.AddScoped<IProductTypeRepository, ProductTypeRepository>();
 
             // add signInManager
             services.AddScoped<SignInManager<User>>();
