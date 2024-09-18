@@ -12,13 +12,15 @@ namespace nns_backend.Controllers
     {
         private readonly ILogger<AgriculturalProductController> _logger;
         private readonly IAgriculturalProductRepository _agriculturalProductRepository;
+        private readonly IProductTypeRepository _productTypeRepository;
         private readonly IMapper _mapper;
 
-        public AgriculturalProductController(ILogger<AgriculturalProductController> logger, IAgriculturalProductRepository agriculturalProductRepository, IMapper mapper)
+        public AgriculturalProductController(ILogger<AgriculturalProductController> logger, IAgriculturalProductRepository agriculturalProductRepository, IMapper mapper, IProductTypeRepository productTypeRepository)
         {
             _logger = logger;
             _agriculturalProductRepository = agriculturalProductRepository;
             _mapper = mapper;
+            _productTypeRepository = productTypeRepository;
         }
 
         [HttpGet]
@@ -79,6 +81,22 @@ namespace nns_backend.Controllers
             await _agriculturalProductRepository.DeleteAgriculturalProductAsync(id);
 
             return NoContent();
+        }
+
+        [HttpGet("{id}/product-types")]
+        public async Task<ActionResult<List<ProductTypeResponseDTO>>> GetProductTypes(int id)
+        {
+            var product = await _agriculturalProductRepository.GetAgriculturalProductByIdAsync(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            var productTypes = await _productTypeRepository.GetProductTypesAsync();
+            //Filter
+            productTypes = productTypes.Where(pt => pt.AgriculturalProductId == id).ToList();
+            var productTypeDTOs = _mapper.Map<List<ProductTypeResponseDTO>>(productTypes);
+            return Ok(productTypeDTOs);
         }
     }
 }
