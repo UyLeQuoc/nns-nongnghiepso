@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using nns_backend;
 
@@ -11,9 +12,11 @@ using nns_backend;
 namespace nns_backend.Migrations
 {
     [DbContext(typeof(NNSDBContext))]
-    partial class NNSDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240919044346_Add field into user")]
+    partial class Addfieldintouser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

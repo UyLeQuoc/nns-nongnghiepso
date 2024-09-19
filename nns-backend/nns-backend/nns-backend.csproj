@@ -29,9 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Commons\" />
     <Folder Include="Enums\" />
-    <Folder Include="Utils\" />
     <Folder Include="Workers\" />
   </ItemGroup>
 

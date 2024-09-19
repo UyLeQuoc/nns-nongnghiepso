@@ -56,7 +56,7 @@ namespace nns_backend
                         Email = "admin@gmail.com"
                     };
                     await userManager.CreateAsync(user);
-                    await userManager.AddToRoleAsync(user, "Admin");
+                    await userManager.AddToRoleAsync(user, "ADMIN");
 
                     //Add Agent
                     var user1 = new User
@@ -65,7 +65,7 @@ namespace nns_backend
                         Email = "agent1@gmail.com"
                     };
                     await userManager.CreateAsync(user1);
-                    await userManager.AddToRoleAsync(user1, "Agent");
+                    await userManager.AddToRoleAsync(user1, "AGENT");
 
                     var user2 = new User
                     {
@@ -73,7 +73,7 @@ namespace nns_backend
                         Email = "agent2@gmail.com"
                     };
                     await userManager.CreateAsync(user2);
-                    await userManager.AddToRoleAsync(user2, "Agent");
+                    await userManager.AddToRoleAsync(user2, "AGENT");
                 }
             }
             catch (Exception e)

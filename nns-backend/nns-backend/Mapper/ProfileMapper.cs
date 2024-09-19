@@ -29,6 +29,8 @@ namespace nns_backend.Mapper
                 .ReverseMap();
             CreateMap<ProductTypeUpdateDTO, ProductType>()
                 .ReverseMap();
+
+            CreateMap<User, ResponseLoginDTO>();
         }
     }
 }

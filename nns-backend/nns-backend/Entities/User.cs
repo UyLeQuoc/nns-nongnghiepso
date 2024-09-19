@@ -5,11 +5,10 @@ namespace nns_backend.Entities
     public class User : IdentityUser<int>
     {
         public string? FullName { get; set; }
-        public string? UnsignFullName { get; set; } = "";
         public DateTime? Dob { get; set; }
         public string? PhoneNumber { get; set; }
-        public bool? Gender { get; set; }
         public string? ImageUrl { get; set; } = "";
+        public string? ThumbnailUrl { get; set; } = "";
         public string? Description { get; set; }
         public string? Address { get; set; }
 

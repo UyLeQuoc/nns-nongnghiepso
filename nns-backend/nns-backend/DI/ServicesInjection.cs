@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using nns_backend.Commons;
 using nns_backend.Entities;
 using nns_backend.Interfaces;
 using nns_backend.Mapper;
@@ -24,15 +25,16 @@ namespace nns_backend.DI
             services.AddTransient<PerformanceTimeMiddleware>();
             services.AddScoped<UserStatusMiddleware>(); // sử dụng ClaimsIdentity nên dùng Addscoped theo request
             //others
-            //services.AddScoped<ICurrentTime, CurrentTime>();
+            services.AddScoped<ICurrentTime, CurrentTime>();
             services.AddSingleton<Stopwatch>();
             services.AddHttpContextAccessor();
             services.AddAutoMapper(typeof(ProfileMapper).Assembly);
-            //services.AddScoped<IClaimsService, ClaimsService>();
+            services.AddScoped<IClaimsService, ClaimsService>();
             // add repositories
             services.AddScoped<IBlogRepository, BlogRepository>();
             services.AddScoped<IAgriculturalProductRepository, AgriculturalProductRepository>();
             services.AddScoped<IProductTypeRepository, ProductTypeRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             // add signInManager
             services.AddScoped<SignInManager<User>>();
