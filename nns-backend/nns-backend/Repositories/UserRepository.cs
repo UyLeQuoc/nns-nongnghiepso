@@ -341,5 +341,68 @@ namespace nns_backend.Repositories
                 throw;
             }
         }
+
+        public async Task<User> AddAgentWithPreferencesAsync(UserSignupDTO newUser)
+        {
+            try
+            {
+                var existingUser = await _userManager.FindByEmailAsync(newUser.Email);
+                if (existingUser != null)
+                {
+                    throw new Exception("User with this email already exists.");
+                }
+
+                var user = new User
+                {
+                    Email = newUser.Email,
+                    FullName = newUser.FullName,
+                    Dob = newUser.Dob,
+                    PhoneNumber = newUser.PhoneNumber,
+                    ImageUrl = newUser.ImageUrl,
+                    ThumbnailUrl = newUser.ThumbnailUrl,
+                    Description = newUser.Description,
+                    Address = newUser.Address,
+                    CreatedBy = _claimsService.GetCurrentUserId,
+                    CreatedDate = _timeService.GetCurrentTime(),
+                    UserName = newUser.Email
+                };
+
+                var result = await _userManager.CreateAsync(user, newUser.Password);
+                if (!result.Succeeded)
+                {
+                    throw new Exception("Failed to create user.");
+                }
+
+                // Add role to user
+                var roleExists = await _roleManager.RoleExistsAsync("AGENT");
+                if (!roleExists)
+                {
+                    await _roleManager.CreateAsync(new Role { Name = "AGENT" });
+                }
+                await _userManager.AddToRoleAsync(user, "AGENT");
+
+                // Add AgentProductPreferences
+                foreach (var preferenceDTO in newUser.agentProductPreferenceCreateDTOs)
+                {
+                    var preference = new AgentProductPreference
+                    {
+                        UserId = user.Id,
+                        ProductTypeId = preferenceDTO.ProductTypeId,
+                        Description = preferenceDTO.Description,
+                        CreatedAt = _timeService.GetCurrentTime(),
+                        UpdatedAt = _timeService.GetCurrentTime()
+                    };
+                    _context.AgentProductPreferences.Add(preference);
+                }
+
+                await _context.SaveChangesAsync();
+
+                return user;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

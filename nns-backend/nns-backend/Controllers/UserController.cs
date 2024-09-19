@@ -174,5 +174,20 @@ namespace nns_backend.Controllers
             }
             return Ok(resultUser);
         }
+
+        // POST: api/User/signup-agent
+        [HttpPost("signup-agent")]
+        public async Task<IActionResult> SignupAgent(UserSignupDTO userSignupDTO)
+        {
+            try
+            {
+                var user = await _userRepository.AddAgentWithPreferencesAsync(userSignupDTO);
+                return Ok(user);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
     }
 }

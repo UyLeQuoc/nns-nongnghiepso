@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using nns_backend;
 
@@ -11,9 +12,11 @@ using nns_backend;
 namespace nns_backend.Migrations
 {
     [DbContext(typeof(NNSDBContext))]
-    partial class NNSDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240919115202_add agent product preferences")]
+    partial class addagentproductpreferences
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -135,20 +138,17 @@ namespace nns_backend.Migrations
                         .HasColumnType("int")
                         .HasColumnOrder(1);
 
-                    b.Property<DateTime?>("CreatedAt")
-                        .IsRequired()
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<decimal?>("TodayPrice")
-                        .IsRequired()
+                    b.Property<decimal>("TodayPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .IsRequired()
+                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("UserId", "ProductTypeId");
@@ -271,6 +271,7 @@ namespace nns_backend.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
@@ -283,6 +284,7 @@ namespace nns_backend.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

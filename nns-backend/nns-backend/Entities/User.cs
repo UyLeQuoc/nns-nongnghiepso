@@ -21,5 +21,7 @@ namespace nns_backend.Entities
         public DateTime? DeletionDate { get; set; }
         public int? DeleteBy { get; set; }
         public bool? IsDeleted { get; set; } = false;
+
+        public virtual ICollection<AgentProductPreference> AgentProductPreferences { get; set; }
     }
 }

@@ -28,5 +28,6 @@ namespace nns_backend.Interfaces
         Task<bool> UpdateUserRoleAsync(int userId, string newRole);
 
         Task<User> GetUserByIdAsync(int id);
+        Task<User> AddAgentWithPreferencesAsync(UserSignupDTO newUser);
     }
 }
