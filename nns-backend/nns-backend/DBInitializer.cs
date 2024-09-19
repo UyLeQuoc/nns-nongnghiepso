@@ -7,6 +7,19 @@ namespace nns_backend
     {
         public static async Task Initialize(NNSDBContext context, UserManager<User> userManager)
         {
+            //Check if admin is not have in db add admin
+            if (context.Users.Where(u => u.UserName == "admin").FirstOrDefault() == null)
+            {
+                //Add Admin
+                var user = new User
+                {
+                    UserName = "admin",
+                    Email = "admin@gmail.com"
+                };
+                await userManager.CreateAsync(user, "123456");
+                await userManager.AddToRoleAsync(user, "ADMIN");
+            }
+
             //Add Blogs
             if (!context.Blogs.Any())
             {
@@ -28,6 +41,7 @@ namespace nns_backend
                 await context.Blogs.AddRangeAsync(blogs);
                 await context.SaveChangesAsync();
             }
+
             //Add Roles
             try
             {
@@ -49,22 +63,13 @@ namespace nns_backend
                     await context.Roles.AddRangeAsync(roles);
                     await context.SaveChangesAsync();
 
-                    //Add Admin
-                    var user = new User
-                    {
-                        UserName = "admin",
-                        Email = "admin@gmail.com"
-                    };
-                    await userManager.CreateAsync(user);
-                    await userManager.AddToRoleAsync(user, "ADMIN");
-
                     //Add Agent
                     var user1 = new User
                     {
                         UserName = "agent1",
                         Email = "agent1@gmail.com"
                     };
-                    await userManager.CreateAsync(user1);
+                    await userManager.CreateAsync(user1, "123456");
                     await userManager.AddToRoleAsync(user1, "AGENT");
 
                     var user2 = new User
@@ -72,7 +77,7 @@ namespace nns_backend
                         UserName = "agent2",
                         Email = "agent2@gmail.com"
                     };
-                    await userManager.CreateAsync(user2);
+                    await userManager.CreateAsync(user2, "123456");
                     await userManager.AddToRoleAsync(user2, "AGENT");
                 }
             }

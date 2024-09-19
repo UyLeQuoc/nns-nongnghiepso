@@ -12,6 +12,7 @@ import BackgroundAnimation from '@/components/background-animation'
 import NavBar from '@/components/nav-bar'
 import Image from 'next/image'
 import { uploadImage } from '@/lib/firebase'
+import { useRouter } from 'next/navigation'
 
 interface ProductType {
   id: number
@@ -47,6 +48,8 @@ export default function AgentSignupForm() {
   const [error, setError] = useState<string | null>(null)
   const [agriculturalProducts, setAgriculturalProducts] = useState<AgriculturalProduct[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(true)
+
+  const router = useRouter()
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -114,6 +117,7 @@ export default function AgentSignupForm() {
       const response = await axios.post(`https://nongnghiepso.uydev.id.vn/api/User/signup-agent`, agentData)
       console.log('Agent created:', response.data)
       alert('Agent created successfully!')
+      router.push('/login')
     } catch (error: any) {
       setError(error.response ? error.response.data.message : 'An error occurred.')
     } finally {

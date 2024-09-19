@@ -3,6 +3,7 @@ import { TractorIcon, MenuIcon, XIcon } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
 import { Button } from './ui/button';
+import { useRouter } from 'next/navigation';
 
 export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -37,8 +38,12 @@ export default function NavBar() {
       </nav>
 
       <div className="hidden xl:flex items-center space-x-4">
-        <Button className="bg-[#DCFFD7] text-[#0F4026] hover:bg-[#DCFFD7] hover:opacity-60">Đăng nhập</Button>
-        <Button className="bg-[#FAFE44] text-[#0F4026] hover:bg-[#FAFE44] hover:opacity-60">Đăng ký đại lý</Button>
+        <Link href="/login" className="w-full">
+          <Button className="w-full bg-[#DCFFD7] text-[#0F4026] hover:bg-[#DCFFD7] hover:opacity-60">Đăng nhập</Button>
+        </Link>
+        <Link href="/register" className="w-full">
+          <Button className="w-full bg-[#FAFE44] text-[#0F4026] hover:bg-[#FAFE44] hover:opacity-60">Đăng ký đại lý</Button>
+        </Link>
       </div>
 
       {/* Mobile Menu Button */}
@@ -73,8 +78,12 @@ export default function NavBar() {
             </Link>
           </nav>
           <div className="flex flex-col items-start space-y-4 mt-4">
-            <Button className="w-full bg-[#DCFFD7] text-[#0F4026] hover:bg-[#DCFFD7] hover:opacity-60">Đăng nhập</Button>
-            <Button className="w-full bg-[#FAFE44] text-[#0F4026] hover:bg-[#FAFE44] hover:opacity-60">Đăng ký đại lý</Button>
+            <Link href="/login" className="w-full">
+              <Button className="w-full bg-[#DCFFD7] text-[#0F4026] hover:bg-[#DCFFD7] hover:opacity-60">Đăng nhập</Button>
+            </Link>
+            <Link href="/register" className="w-full">
+              <Button className="w-full bg-[#FAFE44] text-[#0F4026] hover:bg-[#FAFE44] hover:opacity-60">Đăng ký đại lý</Button>
+            </Link>
           </div>
         </div>
       )}
