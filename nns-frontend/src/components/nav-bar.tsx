@@ -59,7 +59,7 @@ export default function NavBar() {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="xl:hidden absolute top-16 left-0 right-0 bg-[#0F4026] p-4 shadow-lg space-y-4 z-10">
+        <div className="xl:hidden absolute top-16 left-0 right-0 bg-[#0F4026] p-4 shadow-lg space-y-4 z-50">
           <nav className="flex flex-col items-start space-y-4">
             <Link href="/" className="text-lg font-medium" prefetch={false}>
               Trang chủ

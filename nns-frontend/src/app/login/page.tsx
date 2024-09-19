@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import BackgroundAnimation from '@/components/background-animation'
 import NavBar from '@/components/nav-bar'
+import { useRouter } from 'next/navigation'
 
 export default function Login() {
   const [loginData, setLoginData] = useState({
@@ -17,6 +18,8 @@ export default function Login() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
+
+  const router = useRouter();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -34,6 +37,17 @@ export default function Login() {
       setSuccessMessage('Login successful!')
 
       console.log('Login Response:', response.data)
+      if(response.data) {
+        localStorage.setItem('user', response.data)
+        console.log((response.data?.roles[0] as string).toUpperCase() == 'ADMIN')
+        if((response.data?.roles[0] as string).toUpperCase() == 'ADMIN') {
+          router.push('/admin/blogs')
+        }else if((response.data?.roles[0] as string).toUpperCase() == 'AGENT') {
+          router.push('/agent')
+        } else{
+          router.push('/')
+        }
+      }
     } catch (error: any) {
       setError(error.response.data ? error.response.data : 'Login failed.')
     } finally {
