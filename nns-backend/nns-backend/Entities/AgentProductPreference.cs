@@ -12,7 +12,7 @@ namespace nns_backend.Entities
         public int ProductTypeId { get; set; }
         public string? Description { get; set; }
 
-        public decimal? TodayPrice { get; set; }
+        public decimal? TodayPrice { get; set; } = 0;
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public User User { get; set; }
