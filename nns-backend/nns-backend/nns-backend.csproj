@@ -33,4 +33,10 @@
     <Folder Include="Workers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\custom-swagger.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

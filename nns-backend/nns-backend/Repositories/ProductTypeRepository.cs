@@ -44,5 +44,14 @@ namespace nns_backend.Repositories
                 await _context.SaveChangesAsync();
             }
         }
+
+        public async Task<List<ProductType>> GetAgentProductTypesAsync(int agentId)
+        {
+            var agentProductPreferences = await _context.AgentProductPreferences.Where(pt => pt.UserId == agentId).ToListAsync();
+
+            var productTypes = await _context.ProductTypes.Where(pt => agentProductPreferences.Any(app => app.ProductTypeId == pt.Id)).ToListAsync();
+
+            return productTypes;
+        }
     }
 }

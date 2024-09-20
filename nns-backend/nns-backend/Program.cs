@@ -94,6 +94,8 @@ builder.Services.AddCors(opt =>
 
 var app = builder.Build();
 
+app.UseStaticFiles();
+
 var scope = app.Services.CreateScope();
 var context = scope.ServiceProvider.GetRequiredService<NNSDBContext>();
 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
@@ -117,7 +119,7 @@ if (app.Environment.IsDevelopment())
         // Always keep token after reload or refresh browser
         config.SwaggerEndpoint("/swagger/v1/swagger.json", "NongNghiepSo API v.01");
         config.ConfigObject.AdditionalItems.Add("persistAuthorization", "true");
-        //config.InjectJavascript("/custom-swagger.js");
+        config.InjectJavascript("/custom-swagger.js");
     });
     app.ApplyMigrations(logger);
 }

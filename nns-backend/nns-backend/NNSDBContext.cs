@@ -13,7 +13,7 @@ namespace nns_backend
         public DbSet<AgriculturalProduct> AgriculturalProducts { get; set; }
         public DbSet<ProductType> ProductTypes { get; set; }
         public DbSet<AgentProductPreference> AgentProductPreferences { get; set; }
-
+        public DbSet<ProductTypePrice> ProductTypePrices { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

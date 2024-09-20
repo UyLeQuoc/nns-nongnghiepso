@@ -80,5 +80,13 @@ namespace nns_backend.Controllers
 
             return NoContent();
         }
+
+        [HttpGet("/get-agent-product-types/{userId}")]
+        public async Task<ActionResult<List<ProductTypeResponseDTO>>> GetAgentProductTypes(int userId)
+        {
+            var productTypes = await _productTypeRepository.GetAgentProductTypesAsync(userId);
+            var productTypeDTOs = _mapper.Map<List<ProductTypeResponseDTO>>(productTypes);
+            return Ok(productTypeDTOs);
+        }
     }
 }

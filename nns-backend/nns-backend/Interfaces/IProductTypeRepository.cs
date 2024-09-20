@@ -9,5 +9,6 @@ namespace nns_backend.Interfaces
         Task<ProductType> CreateProductTypeAsync(ProductType productType);
         Task UpdateProductTypeAsync(ProductType productType);
         Task DeleteProductTypeAsync(int id);
+        Task<List<ProductType>> GetAgentProductTypesAsync(int agentId);
     }
 }
