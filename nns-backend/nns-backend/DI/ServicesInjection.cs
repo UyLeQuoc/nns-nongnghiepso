@@ -35,6 +35,7 @@ namespace nns_backend.DI
             services.AddScoped<IAgriculturalProductRepository, AgriculturalProductRepository>();
             services.AddScoped<IProductTypeRepository, ProductTypeRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IAgentProductPreferenceRepository, AgentProductPreferenceRepository>();
 
             // add signInManager
             services.AddScoped<SignInManager<User>>();
