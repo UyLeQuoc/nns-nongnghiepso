@@ -6,20 +6,17 @@ namespace nns_backend.Workers
     {
         private Timer _dailyTimer;
         private Timer _hourlyLogTimer;
-        private readonly IServiceProvider _serviceProvider;
-        private readonly ICurrentTime _currentTime;
+        private readonly IServiceProvider _serviceProvider; // IServiceProvider will be used to create scopes
         private readonly IAgentProductPreferenceRepository _repository;
         private readonly ILogger<CronJobService> _logger;
         private DateTime _nextRunTime;
 
         public CronJobService(
             IServiceProvider serviceProvider,
-            ICurrentTime currentTime,
             IAgentProductPreferenceRepository repository,
             ILogger<CronJobService> logger)
         {
             _serviceProvider = serviceProvider;
-            _currentTime = currentTime;
             _repository = repository;
             _logger = logger;
         }
@@ -28,39 +25,45 @@ namespace nns_backend.Workers
         {
             _logger.LogInformation("CronJobService is starting...");
 
-            // Get current time in UTC +7
-            var now = _currentTime.GetCurrentTime();
-            _nextRunTime = now.Date.AddHours(8); // 8 AM local time (UTC +7)
-            _logger.LogInformation($"Current time is {now}. Next run time is set for {_nextRunTime}.");
-
-            if (now > _nextRunTime)
+            using (var scope = _serviceProvider.CreateScope())
             {
-                _nextRunTime = _nextRunTime.AddDays(1); // If past 8 AM, schedule for the next day
-                _logger.LogInformation($"Next run time adjusted to {_nextRunTime}.");
+                var currentTimeService = scope.ServiceProvider.GetRequiredService<ICurrentTime>();
+                var now = currentTimeService.GetCurrentTime();
+                _nextRunTime = now.Date.AddHours(8); // 8 AM local time (UTC +7)
+                _logger.LogInformation($"Current time is {now}. Next run time is set for {_nextRunTime}.");
+
+                if (now > _nextRunTime)
+                {
+                    _nextRunTime = _nextRunTime.AddDays(1); // If past 8 AM, schedule for the next day
+                    _logger.LogInformation($"Next run time adjusted to {_nextRunTime}.");
+                }
+
+                var initialDelay = _nextRunTime - now;
+                _logger.LogInformation($"Initial delay is {initialDelay.TotalMinutes} minutes.");
+
+                // Set up the daily timer to run the job at 8 AM every day.
+                _dailyTimer = new Timer(DoWork, null, initialDelay, TimeSpan.FromHours(24));
+
+                // Set up an hourly timer to log the remaining time every hour.
+                _hourlyLogTimer = new Timer(LogTimeRemaining, null, TimeSpan.Zero, TimeSpan.FromHours(1));
             }
-
-            var initialDelay = _nextRunTime - now;
-            _logger.LogInformation($"Initial delay is {initialDelay.TotalMinutes} minutes.");
-
-            // Set up the daily timer to run the job at 8 AM every day.
-            _dailyTimer = new Timer(DoWork, null, initialDelay, TimeSpan.FromHours(24));
-
-            // Set up an hourly timer to log the remaining time every hour.
-            _hourlyLogTimer = new Timer(LogTimeRemaining, null, TimeSpan.Zero, TimeSpan.FromHours(1));
 
             return Task.CompletedTask;
         }
 
         private async void DoWork(object state)
         {
-            _logger.LogInformation("CronJobService is executing DoWork at {Time}.", _currentTime.GetCurrentTime());
-
             using (var scope = _serviceProvider.CreateScope())
             {
+                var currentTimeService = scope.ServiceProvider.GetRequiredService<ICurrentTime>();
+                var now = currentTimeService.GetCurrentTime();
+
+                _logger.LogInformation("CronJobService is executing DoWork at {Time}.", now);
+
                 try
                 {
                     _logger.LogInformation("Transferring today's prices to ProductTypePrices...");
-                    await _repository.TransferTodayPricesToProductTypePricesAsync(_currentTime.GetCurrentTime());
+                    await _repository.TransferTodayPricesToProductTypePricesAsync(now);
                     _logger.LogInformation("Successfully transferred today's prices.");
                 }
                 catch (Exception ex)
@@ -73,16 +76,20 @@ namespace nns_backend.Workers
         // Logs the remaining time until the next job run.
         private void LogTimeRemaining(object state)
         {
-            var now = _currentTime.GetCurrentTime();
-            var timeRemaining = _nextRunTime - now;
+            using (var scope = _serviceProvider.CreateScope())
+            {
+                var currentTimeService = scope.ServiceProvider.GetRequiredService<ICurrentTime>();
+                var now = currentTimeService.GetCurrentTime();
+                var timeRemaining = _nextRunTime - now;
 
-            if (timeRemaining.TotalMinutes <= 0)
-            {
-                _logger.LogInformation("The job is scheduled to run soon.");
-            }
-            else
-            {
-                _logger.LogInformation($"Time remaining until the next job: {timeRemaining.Hours} hours and {timeRemaining.Minutes} minutes.");
+                if (timeRemaining.TotalMinutes <= 0)
+                {
+                    _logger.LogInformation("The job is scheduled to run soon.");
+                }
+                else
+                {
+                    _logger.LogInformation($"Time remaining until the next job: {timeRemaining.Hours} hours and {timeRemaining.Minutes} minutes.");
+                }
             }
         }
 
