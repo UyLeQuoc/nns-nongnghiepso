@@ -6,6 +6,7 @@ using nns_backend.Interfaces;
 using nns_backend.Mapper;
 using nns_backend.Middlewares;
 using nns_backend.Repositories;
+using nns_backend.Workers;
 using System.Diagnostics;
 
 namespace nns_backend.DI
@@ -42,6 +43,8 @@ namespace nns_backend.DI
 
             // add services
 
+            // Register the CronJobService
+            services.AddHostedService<CronJobService>();
 
             // add unitOfWork
             return services;
