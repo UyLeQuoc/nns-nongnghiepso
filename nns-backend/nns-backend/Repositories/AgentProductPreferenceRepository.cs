@@ -59,5 +59,33 @@ namespace nns_backend.Repositories
                 .OrderBy(d => d.Date) // Sort by date
                 .ToListAsync();
         }
+
+        public async Task<List<AgentProductPreferenceResponseDTO>> GetAgentProductPreferencesByUserIdAsync(int userId)
+        {
+            // Query the AgentProductPreference table for the given userId
+            var preferences = await _context.AgentProductPreferences
+                .Where(p => p.UserId == userId)
+                .Include(p => p.ProductType) // Include the related ProductType data
+                .ToListAsync();
+
+            // Map the result to AgentProductPreferenceResponseDTO
+            var result = preferences.Select(p => new AgentProductPreferenceResponseDTO
+            {
+                UserId = p.UserId,
+                ProductTypeId = p.ProductTypeId,
+                Description = p.Description,
+                TodayPrice = p.TodayPrice ?? 0,
+                CreatedAt = p.CreatedAt ?? default(DateTime),
+                UpdatedAt = p.UpdatedAt ?? default(DateTime),
+                ProductType = new ProductTypeResponseDTO
+                {
+                    Id = p.ProductType.Id,
+                    Name = p.ProductType.Name,
+                    Description = p.ProductType.Description
+                }
+            }).ToList();
+
+            return result;
+        }
     }
 }

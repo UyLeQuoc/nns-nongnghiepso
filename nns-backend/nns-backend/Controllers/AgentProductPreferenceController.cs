@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using nns_backend.DTO;
 using nns_backend.Interfaces;
 
 namespace nns_backend.Controllers
@@ -42,6 +43,20 @@ namespace nns_backend.Controllers
             {
                 return BadRequest(new { message = ex.Message });
             }
+        }
+
+        // GET: api/AgentProductPreference/user/{userId}
+        [HttpGet("user/{userId}")]
+        public async Task<ActionResult<List<AgentProductPreferenceResponseDTO>>> GetAgentProductPreferencesByUserId(int userId)
+        {
+            var preferences = await _repository.GetAgentProductPreferencesByUserIdAsync(userId);
+
+            if (preferences == null || preferences.Count == 0)
+            {
+                return NotFound("No preferences found for the specified user.");
+            }
+
+            return Ok(preferences);
         }
     }
 }
