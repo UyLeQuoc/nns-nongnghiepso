@@ -1,4 +1,5 @@
 ﻿using nns_backend.DTO;
+using nns_backend.Entities;
 
 namespace nns_backend.Interfaces
 {
@@ -8,5 +9,6 @@ namespace nns_backend.Interfaces
         Task<List<DailyAveragePriceDTO>> GetDailyAveragePriceAsync(int productTypeId);
         Task<List<AgentProductPreferenceResponseDTO>> GetAgentProductPreferencesByUserIdAsync(int userId);
         Task<List<AgentProductPreferenceResponseDTO>> GetAgentProductPreferencesByProductTypeIdAsync(int productTypeId);
+        Task<AgentProductPreference> UpdateAgentProductPreferenceAsync(UpdateAgentProductPreferenceDTO updateDTO);
     }
 }

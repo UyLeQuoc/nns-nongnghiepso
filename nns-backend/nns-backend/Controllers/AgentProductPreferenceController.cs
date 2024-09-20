@@ -71,5 +71,19 @@ namespace nns_backend.Controllers
 
             return Ok(preferences);
         }
+
+        [HttpPut("/api/update-agent-product-price")]
+        public async Task<IActionResult> UpdateAgentProductPreference([FromBody] UpdateAgentProductPreferenceDTO updateDTO)
+        {
+            try
+            {
+                var updatedPreference = await _repository.UpdateAgentProductPreferenceAsync(updateDTO);
+                return Ok(updatedPreference); // Return updated data if needed
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
     }
 }

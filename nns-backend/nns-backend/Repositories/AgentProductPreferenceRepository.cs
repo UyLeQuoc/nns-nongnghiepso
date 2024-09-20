@@ -128,5 +128,27 @@ namespace nns_backend.Repositories
 
             return result;
         }
+
+        public async Task<AgentProductPreference> UpdateAgentProductPreferenceAsync(UpdateAgentProductPreferenceDTO updateDTO)
+        {
+            var preference = await _context.AgentProductPreferences
+           .FirstOrDefaultAsync(p => p.UserId == updateDTO.UserId && p.ProductTypeId == updateDTO.ProductTypeId);
+
+            if (preference == null)
+            {
+                throw new Exception("Agent product preference not found.");
+            }
+
+            // Update the preference
+            preference.TodayPrice = updateDTO.TodayPrice;
+            preference.Description = updateDTO.Description;
+            preference.CreatedAt = _currentTime.GetCurrentTime();
+            preference.UpdatedAt = _currentTime.GetCurrentTime();
+
+            _context.AgentProductPreferences.Update(preference);
+            await _context.SaveChangesAsync();
+
+            return preference;
+        }
     }
 }
