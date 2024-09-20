@@ -4,11 +4,13 @@ namespace nns_backend.Workers
 {
     public class CronJobService : IHostedService, IDisposable
     {
-        private Timer _timer;
+        private Timer _dailyTimer;
+        private Timer _hourlyLogTimer;
         private readonly IServiceProvider _serviceProvider;
         private readonly ICurrentTime _currentTime;
         private readonly IAgentProductPreferenceRepository _repository;
         private readonly ILogger<CronJobService> _logger;
+        private DateTime _nextRunTime;
 
         public CronJobService(
             IServiceProvider serviceProvider,
@@ -28,21 +30,23 @@ namespace nns_backend.Workers
 
             // Get current time in UTC +7
             var now = _currentTime.GetCurrentTime();
-            var nextRunTime = now.Date.AddHours(8); // 8 AM local time (UTC +7)
-            _logger.LogInformation($"Current time is {now}. Next run time is set for {nextRunTime}.");
+            _nextRunTime = now.Date.AddHours(8); // 8 AM local time (UTC +7)
+            _logger.LogInformation($"Current time is {now}. Next run time is set for {_nextRunTime}.");
 
-            if (now > nextRunTime)
+            if (now > _nextRunTime)
             {
-                nextRunTime = nextRunTime.AddDays(1); // If past 8 AM, schedule for the next day
-                _logger.LogInformation($"Next run time adjusted to {nextRunTime}.");
+                _nextRunTime = _nextRunTime.AddDays(1); // If past 8 AM, schedule for the next day
+                _logger.LogInformation($"Next run time adjusted to {_nextRunTime}.");
             }
 
-            var initialDelay = nextRunTime - now;
+            var initialDelay = _nextRunTime - now;
             _logger.LogInformation($"Initial delay is {initialDelay.TotalMinutes} minutes.");
 
-            // Set up the timer to run the method daily at 8 AM.
-            _timer = new Timer(DoWork, null, initialDelay, TimeSpan.FromHours(24));
-            _logger.LogInformation("Timer is set to trigger every 24 hours.");
+            // Set up the daily timer to run the job at 8 AM every day.
+            _dailyTimer = new Timer(DoWork, null, initialDelay, TimeSpan.FromHours(24));
+
+            // Set up an hourly timer to log the remaining time every hour.
+            _hourlyLogTimer = new Timer(LogTimeRemaining, null, TimeSpan.Zero, TimeSpan.FromHours(1));
 
             return Task.CompletedTask;
         }
@@ -66,17 +70,35 @@ namespace nns_backend.Workers
             }
         }
 
+        // Logs the remaining time until the next job run.
+        private void LogTimeRemaining(object state)
+        {
+            var now = _currentTime.GetCurrentTime();
+            var timeRemaining = _nextRunTime - now;
+
+            if (timeRemaining.TotalMinutes <= 0)
+            {
+                _logger.LogInformation("The job is scheduled to run soon.");
+            }
+            else
+            {
+                _logger.LogInformation($"Time remaining until the next job: {timeRemaining.Hours} hours and {timeRemaining.Minutes} minutes.");
+            }
+        }
+
         public Task StopAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("CronJobService is stopping...");
-            _timer?.Change(Timeout.Infinite, 0);
+            _dailyTimer?.Change(Timeout.Infinite, 0);
+            _hourlyLogTimer?.Change(Timeout.Infinite, 0);
             return Task.CompletedTask;
         }
 
         public void Dispose()
         {
             _logger.LogInformation("CronJobService is disposing...");
-            _timer?.Dispose();
+            _dailyTimer?.Dispose();
+            _hourlyLogTimer?.Dispose();
         }
     }
 }
