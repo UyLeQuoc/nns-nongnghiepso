@@ -58,5 +58,18 @@ namespace nns_backend.Controllers
 
             return Ok(preferences);
         }
+
+        [HttpGet("/api/product-types/{productTypeId}")]
+        public async Task<ActionResult<List<AgentProductPreferenceResponseDTO>>> GetAgentProductPreferencesByProductTypeId(int productTypeId)
+        {
+            var preferences = await _repository.GetAgentProductPreferencesByProductTypeIdAsync(productTypeId);
+
+            if (preferences == null || preferences.Count == 0)
+            {
+                return NotFound("No preferences found for the specified product type.");
+            }
+
+            return Ok(preferences);
+        }
     }
 }

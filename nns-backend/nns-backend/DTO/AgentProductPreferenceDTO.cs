@@ -14,7 +14,8 @@
         public decimal TodayPrice { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-        public ProductTypeResponseDTO ProductType { get; set; }
+        public ProductTypeResponseDTO? ProductType { get; set; }
+        public UserResponseDTO? User { get; set; }
     }
 
 }

@@ -87,5 +87,46 @@ namespace nns_backend.Repositories
 
             return result;
         }
+
+        public async Task<List<AgentProductPreferenceResponseDTO>> GetAgentProductPreferencesByProductTypeIdAsync(int productTypeId)
+        {
+            // Query the AgentProductPreference table for the given productTypeId
+            var preferences = await _context.AgentProductPreferences
+                .Where(p => p.ProductTypeId == productTypeId)
+                .Include(p => p.ProductType) // Include the related ProductType data
+                .Include(p => p.User) // Include the related User data
+                .ToListAsync();
+
+            // Map the result to AgentProductPreferenceResponseDTO
+            var result = preferences.Select(p => new AgentProductPreferenceResponseDTO
+            {
+                UserId = p.UserId,
+                ProductTypeId = p.ProductTypeId,
+                Description = p.Description,
+                TodayPrice = p.TodayPrice ?? 0,
+                CreatedAt = p.CreatedAt ?? default(DateTime),
+                UpdatedAt = p.UpdatedAt ?? default(DateTime),
+                ProductType = new ProductTypeResponseDTO
+                {
+                    Id = p.ProductType.Id,
+                    Name = p.ProductType.Name,
+                    Description = p.ProductType.Description
+                },
+                User = new UserResponseDTO
+                {
+                    UserId = p.User.Id,
+                    FullName = p.User.FullName ?? "",
+                    Email = p.User.Email ?? "",
+                    Dob = p.User.Dob ?? new DateTime(),
+                    PhoneNumber = p.User.PhoneNumber ?? "",
+                    ImageUrl = p.User.ImageUrl ?? "",
+                    ThumbnailUrl = p.User.ThumbnailUrl ?? "",
+                    Description = p.User.Description ?? "",
+                    Address = p.User.Address ?? ""
+                }
+            }).ToList();
+
+            return result;
+        }
     }
 }

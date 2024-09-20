@@ -38,7 +38,7 @@ export default function Login() {
 
       console.log('Login Response:', response.data)
       if(response.data) {
-        localStorage.setItem('user', response.data)
+        localStorage.setItem('user', JSON.stringify(response.data))
         console.log((response.data?.roles[0] as string).toUpperCase() == 'ADMIN')
         if((response.data?.roles[0] as string).toUpperCase() == 'ADMIN') {
           router.push('/admin/blogs')
