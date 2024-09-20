@@ -7,17 +7,14 @@ namespace nns_backend.Workers
         private Timer _dailyTimer;
         private Timer _hourlyLogTimer;
         private readonly IServiceProvider _serviceProvider; // IServiceProvider will be used to create scopes
-        private readonly IAgentProductPreferenceRepository _repository;
         private readonly ILogger<CronJobService> _logger;
         private DateTime _nextRunTime;
 
         public CronJobService(
             IServiceProvider serviceProvider,
-            IAgentProductPreferenceRepository repository,
             ILogger<CronJobService> logger)
         {
             _serviceProvider = serviceProvider;
-            _repository = repository;
             _logger = logger;
         }
 
@@ -53,17 +50,18 @@ namespace nns_backend.Workers
 
         private async void DoWork(object state)
         {
+            _logger.LogInformation("CronJobService is executing DoWork at {Time}.", DateTime.UtcNow.AddHours(7));
+
             using (var scope = _serviceProvider.CreateScope())
             {
                 var currentTimeService = scope.ServiceProvider.GetRequiredService<ICurrentTime>();
+                var repository = scope.ServiceProvider.GetRequiredService<IAgentProductPreferenceRepository>();
                 var now = currentTimeService.GetCurrentTime();
-
-                _logger.LogInformation("CronJobService is executing DoWork at {Time}.", now);
 
                 try
                 {
                     _logger.LogInformation("Transferring today's prices to ProductTypePrices...");
-                    await _repository.TransferTodayPricesToProductTypePricesAsync(now);
+                    await repository.TransferTodayPricesToProductTypePricesAsync(now);
                     _logger.LogInformation("Successfully transferred today's prices.");
                 }
                 catch (Exception ex)
