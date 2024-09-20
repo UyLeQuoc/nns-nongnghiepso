@@ -23,8 +23,12 @@ export const updateAgentProductPreference = async (
 ) => {
   try {
     const response = await axiosClient.put(
-      `/api/AgentProductPreference/user/${userId}/productType/${productTypeId}`,
-      data
+      `/api/update-agent-product-price`,
+      {
+        userId,
+        productTypeId,
+        ...data,
+      }
     );
     return response.data;
   } catch (error) {
