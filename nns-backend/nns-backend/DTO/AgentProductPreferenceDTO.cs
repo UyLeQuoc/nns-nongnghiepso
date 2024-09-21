@@ -18,4 +18,15 @@
         public UserResponseDTO? User { get; set; }
     }
 
+    public class AgentProductPreferenceShortResponseDTO
+    {
+        public int UserId { get; set; }
+        public int ProductTypeId { get; set; }
+        public string Description { get; set; }
+        public decimal TodayPrice { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
+        public ProductTypeResponseDTO? ProductType { get; set; }
+    }
+
 }

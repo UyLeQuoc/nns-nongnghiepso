@@ -31,6 +31,7 @@ namespace nns_backend.Mapper
                 .ReverseMap();
 
             CreateMap<User, ResponseLoginDTO>();
+            CreateMap<User, UserShortResponseDTO>();
         }
     }
 }

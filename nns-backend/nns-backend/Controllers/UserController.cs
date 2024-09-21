@@ -162,14 +162,14 @@ namespace nns_backend.Controllers
         [HttpGet("all")]
         public async Task<IActionResult> GetAllUsers()
         {
-            var resultUser = new List<ResponseLoginDTO>();
+            var resultUser = new List<UserShortResponseDTO>();
             var users = await _userRepository.GetUsersAsync();
             //Mapper
 
             for (int i = 0; i < users.Count; i++)
             {
                 var roles = await _userRepository.GetRoleName(users[i]);
-                var user = _mapper.Map<ResponseLoginDTO>(users[i]);
+                var user = _mapper.Map<UserShortResponseDTO>(users[i]);
                 user.Roles = roles;
                 resultUser.Add(user);
             }
