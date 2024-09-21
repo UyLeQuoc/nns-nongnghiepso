@@ -32,6 +32,7 @@ namespace nns_backend.Mapper
 
             CreateMap<User, ResponseLoginDTO>();
             CreateMap<User, UserShortResponseDTO>();
+            CreateMap<AgentProductPreference, AgentProductPreferenceShortResponseDTO>();
         }
     }
 }
