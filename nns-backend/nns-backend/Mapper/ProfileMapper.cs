@@ -31,9 +31,6 @@ namespace nns_backend.Mapper
                 .ReverseMap();
 
             CreateMap<User, ResponseLoginDTO>();
-
-            CreateMap<AgentProductPreference, AgentProductPreferenceResponseDTO>()
-                .ReverseMap();
         }
     }
 }

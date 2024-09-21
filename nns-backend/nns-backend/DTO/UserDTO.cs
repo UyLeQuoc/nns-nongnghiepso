@@ -1,4 +1,6 @@
-﻿namespace nns_backend.DTO
+﻿using nns_backend.Entities;
+
+namespace nns_backend.DTO
 {
     public class UserSignupDTO
     {
@@ -35,7 +37,7 @@
         public string Description { get; set; }
         public string Address { get; set; }
         public List<string> Roles { get; set; }
-        public List<AgentProductPreferenceResponseDTO>? AgentProductPreferences { get; set; }
+        public List<AgentProductPreference>? AgentProductPreferences { get; set; }
     }
 
     public class UserUpdateDTO
