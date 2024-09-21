@@ -334,6 +334,7 @@ namespace nns_backend.Repositories
             {
                 // Truy vấn người dùng cùng với thông tin về AgentProductPreferences và ProductType
                 var users = await _context.Users
+                    .Where(x => x.Email != "admin@gmail.com")
                     .Include(u => u.AgentProductPreferences)  // Bao gồm AgentProductPreferences của mỗi người dùng
                         .ThenInclude(p => p.ProductType)      // Bao gồm cả ProductType liên quan
                     .ToListAsync();
