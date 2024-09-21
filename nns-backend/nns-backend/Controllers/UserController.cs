@@ -171,6 +171,7 @@ namespace nns_backend.Controllers
                 var roles = await _userRepository.GetRoleName(users[i]);
                 var user = _mapper.Map<ResponseLoginDTO>(users[i]);
                 user.Roles = roles;
+                resultUser.Add(user);
             }
             return Ok(resultUser);
         }

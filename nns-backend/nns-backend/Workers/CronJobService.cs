@@ -6,7 +6,7 @@ namespace nns_backend.Workers
     {
         private Timer _dailyTimer;
         private Timer _hourlyLogTimer;
-        private readonly IServiceProvider _serviceProvider; // IServiceProvider will be used to create scopes
+        private readonly IServiceProvider _serviceProvider;
         private readonly ILogger<CronJobService> _logger;
         private DateTime _nextRunTime;
 
