@@ -332,13 +332,18 @@ namespace nns_backend.Repositories
         {
             try
             {
-                var users = await _context.Users.ToListAsync();
+                // Truy vấn người dùng cùng với thông tin về AgentProductPreferences và ProductType
+                var users = await _context.Users
+                    .Include(u => u.AgentProductPreferences)  // Bao gồm AgentProductPreferences của mỗi người dùng
+                        .ThenInclude(p => p.ProductType)      // Bao gồm cả ProductType liên quan
+                    .ToListAsync();
 
                 return users;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                // Log lỗi và ném exception nếu có lỗi
+                throw new Exception("Error retrieving users with AgentProductPreferences", ex);
             }
         }
 

@@ -94,7 +94,7 @@ export default function AdminLayout({
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
-                href="#"
+                href="/admin/users"
                 className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
               >
                 <Users2 className="h-5 w-5" />
@@ -145,25 +145,18 @@ export default function AdminLayout({
                   Dashboard
                 </Link>
                 <Link
-                  href="#"
+                  href="/admin/blogs"
                   className="flex items-center gap-4 px-2.5 text-foreground"
                 >
                   <PaperclipIcon className="h-5 w-5" />
                   Blogs
                 </Link>
                 <Link
-                  href="#"
+                  href="/admin/users"
                   className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
                 >
                   <Package className="h-5 w-5" />
                   Đại lý
-                </Link>
-                <Link
-                  href="/admin/agricultural-products"
-                  className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-                >
-                  <Users2 className="h-5 w-5" />
-                  Customers
                 </Link>
               </nav>
             </SheetContent>
@@ -183,14 +176,14 @@ export default function AdminLayout({
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
-          <div className="relative ml-auto flex-1 md:grow-0">
+          {/* <div className="relative ml-auto flex-1 md:grow-0">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               type="search"
               placeholder="Search..."
               className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
             />
-          </div>
+          </div> */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
