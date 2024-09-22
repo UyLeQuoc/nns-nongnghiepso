@@ -1,12 +1,12 @@
 "use client"
 
-import { useState, useEffect } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import BackgroundAnimation from '@/components/background-animation'
 import NavBar from '@/components/nav-bar'
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
 interface User {
   userId: number
@@ -33,6 +33,7 @@ interface AgentProductPreference {
 
 export default function UserDashboard() {
   const [users, setUsers] = useState<User[]>([])
+  const router = useRouter()
 
   useEffect(() => {
     fetch('https://nongnghiepso.uydev.id.vn/api/User/all')
@@ -51,7 +52,9 @@ export default function UserDashboard() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {users.map((user, index) => (
           <Card key={index} className="w-full">
-            <CardHeader className="flex flex-row items-center gap-4">
+            <CardHeader className="flex flex-row items-center gap-4 cursor-pointer" onClick={() => {
+                router.push(`/dai-ly/${user.id}`)
+            }}>
               <Avatar className="w-16 h-16 object-cover">
                 <AvatarImage src={user.imageUrl} alt={user.fullName || 'User'} className=' object-cover'/>
                 <AvatarFallback>{user.fullName ? user.fullName.substring(0, 2).toUpperCase() : 'U'}</AvatarFallback>
