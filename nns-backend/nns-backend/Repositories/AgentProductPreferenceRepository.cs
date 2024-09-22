@@ -66,6 +66,7 @@ namespace nns_backend.Repositories
             var preferences = await _context.AgentProductPreferences
                 .Where(p => p.UserId == userId)
                 .Include(p => p.ProductType) // Include the related ProductType data
+                .Include(p => p.User) // Include the related User data
                 .ToListAsync();
 
             // Map the result to AgentProductPreferenceResponseDTO

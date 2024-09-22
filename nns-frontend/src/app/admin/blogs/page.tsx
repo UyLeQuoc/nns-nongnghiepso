@@ -1,16 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import axios from "axios";
+import blogApi from "@/apis/blogApi";
 import { Button } from "@/components/ui/button";
-import {
-  Table,
-  TableHeader,
-  TableRow,
-  TableCell,
-  TableHead,
-  TableBody,
-} from "@/components/ui/table";
 import {
   Dialog,
   DialogContent,
@@ -20,10 +11,16 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { PencilIcon, TrashIcon } from "lucide-react";
-import blogApi from "@/apis/blogApi";
-import { toast } from "@/hooks/use-toast";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableRow
+} from "@/components/ui/table";
 import { Toaster } from "@/components/ui/toaster";
+import { toast } from "@/hooks/use-toast";
+import { PencilIcon, TrashIcon } from "lucide-react";
+import { useEffect, useState } from "react";
 
 // Define the Blog type
 interface Blog {

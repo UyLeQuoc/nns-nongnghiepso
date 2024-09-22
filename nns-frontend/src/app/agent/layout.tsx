@@ -36,6 +36,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { ToastProvider } from "@/components/ui/toast";
 
 export default function AdminLayout({
   children,
@@ -45,6 +46,7 @@ export default function AdminLayout({
   return (
     <html lang="en">
       <body>
+      <ToastProvider>
       <div className="flex min-h-screen w-full flex-col bg-muted/40">
       <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
         <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
@@ -176,20 +178,12 @@ export default function AdminLayout({
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
-          {/* <div className="relative ml-auto flex-1 md:grow-0">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder="Search..."
-              className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
-            />
-          </div> */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
                 variant="outline"
                 size="icon"
-                className="overflow-hidden rounded-full"
+                className="overflow-hidden rounded-full ml-auto"
               >
                 <Image
                   src="/placeholder-user.jpg"
@@ -220,6 +214,7 @@ export default function AdminLayout({
         </main>
       </div>
     </div>
+      </ToastProvider>
       </body>
     </html>
   );
