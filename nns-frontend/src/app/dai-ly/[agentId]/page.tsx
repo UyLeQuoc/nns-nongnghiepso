@@ -124,7 +124,7 @@ function UserInfoCard({ userInfo }: { userInfo: UserInfo | null }) {
             height={170}
             className="rounded-full aspect-square object-cover border-[5px] border-white"
           />
-          <div className="self-end py-4">
+          <div className="self-end py-3">
             <h2 className="text-3xl font-bold mb-2">{userInfo.fullName}</h2>
             <p className="text-gray-500">Số điện thoại: {userInfo.phoneNumber}</p>
             <p className="text-gray-500">Email: {userInfo.email}</p>
@@ -155,7 +155,7 @@ function PreferenceCard({ preference }: { preference: AgentProductPreferenceResp
       </CardHeader>
       <CardContent>
         <p className="text-sm text-gray-600 mb-2">{preference.productType.description}</p>
-        <p className="font-semibold">Today's Price: ${preference.todayPrice.toFixed(2)}</p>
+        <p className="font-semibold">Today Price: ${preference.todayPrice.toFixed(2)}</p>
         <p className="mt-2">{preference.description}</p>
       </CardContent>
     </Card>

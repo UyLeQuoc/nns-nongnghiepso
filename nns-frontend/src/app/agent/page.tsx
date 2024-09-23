@@ -28,16 +28,17 @@ interface AgentProductPreferenceResponseDTO {
 
 export default function AgentProductPreferences() {
   const [userPreferences, setUserPreferences] = useState<AgentProductPreferenceResponseDTO[]>([])
+  const [userId, setUserId] = useState(0)
   const [loading, setLoading] = useState(true)
   const { toast } = useToast()
 
-  const userId = JSON.parse(localStorage.getItem("user") || "0")?.userId
-
   const fetchPreferences = async () => {
     try {
-      const currentUserPreferences = await fetchPreferencesByUserId(userId)
-      setUserPreferences(currentUserPreferences)
-      setLoading(false)
+      if(userId != 0) {
+        const currentUserPreferences = await fetchPreferencesByUserId(userId)
+        setUserPreferences(currentUserPreferences)
+        setLoading(false)
+      }
     } catch (error) {
       console.error("Error fetching preferences:", error)
       setLoading(false)
@@ -50,7 +51,11 @@ export default function AgentProductPreferences() {
   }
 
   useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user') || '{}')
+    setUserId(user.userId)
     fetchPreferences()
+
+
   }, [])
 
   const handleInputChange = (
@@ -103,7 +108,7 @@ export default function AgentProductPreferences() {
                   type="number"
                   value={pref.todayPrice}
                   onChange={(e) => handleInputChange(e, pref.productTypeId, "todayPrice")}
-                  placeholder="Today's Price"
+                  placeholder="Todays Price"
                   className="mb-4"
                 />
 

@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 interface User {
+  id: number
   userId: number
   fullName: string
   email: string
@@ -78,7 +79,7 @@ export default function UserDashboard() {
                       <TableRow>
                         <TableHead>Product</TableHead>
                         <TableHead>Description</TableHead>
-                        <TableHead>Today's Price</TableHead>
+                        <TableHead>Today Price</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>

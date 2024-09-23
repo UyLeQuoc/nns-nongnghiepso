@@ -77,7 +77,7 @@ export default function UserDashboard() {
                       <TableRow>
                         <TableHead>Product</TableHead>
                         <TableHead>Description</TableHead>
-                        <TableHead>Today's Price</TableHead>
+                        <TableHead>Todays Price</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
