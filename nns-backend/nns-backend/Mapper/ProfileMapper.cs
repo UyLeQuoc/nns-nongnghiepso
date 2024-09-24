@@ -33,6 +33,10 @@ namespace nns_backend.Mapper
             CreateMap<User, ResponseLoginDTO>();
             CreateMap<User, UserShortResponseDTO>();
             CreateMap<AgentProductPreference, AgentProductPreferenceShortResponseDTO>();
+
+            CreateMap<FarmTool, FarmToolResponseDTO>().ReverseMap();
+            CreateMap<FarmToolCreateDTO, FarmTool>().ReverseMap();
+            CreateMap<FarmToolUpdateDTO, FarmTool>().ReverseMap();
         }
     }
 }
