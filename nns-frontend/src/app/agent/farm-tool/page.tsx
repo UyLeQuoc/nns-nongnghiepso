@@ -32,7 +32,7 @@ export default function FarmToolManagementPage() {
   }, [])
 
   const fetchFarmTools = async () => {
-    const data = await farmToolApi.getAll()
+    const data = await farmToolApi.getByUserId(JSON.parse(localStorage.getItem("user") || '{}').userId)
     setFarmTools(data)
   }
 
@@ -104,6 +104,7 @@ export default function FarmToolManagementPage() {
         ...toolFormData,
         imageUrl,
         createdAt: selectedTool.createdAt,
+        userId: JSON.parse(localStorage.getItem("user") || '{}').userId,
       })
       toast({
         title: "Tool updated successfully",
@@ -113,6 +114,7 @@ export default function FarmToolManagementPage() {
       await farmToolApi.create({
         ...toolFormData,
         imageUrl,
+        userId: JSON.parse(localStorage.getItem("user") || '{}').userId,
         createdAt: new Date().toISOString(),
       })
       toast({

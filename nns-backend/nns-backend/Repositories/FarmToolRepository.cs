@@ -14,7 +14,7 @@ namespace nns_backend.Repositories
 
         public async Task<List<FarmTool>> GetFarmToolsAsync()
         {
-            return await _context.FarmTools.ToListAsync();
+            return await _context.FarmTools.Include(tool => tool.User).ToListAsync();
         }
 
         public async Task<FarmTool?> GetFarmToolByIdAsync(int id)

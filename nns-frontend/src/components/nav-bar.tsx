@@ -29,6 +29,9 @@ export default function NavBar() {
         <Link href="/dai-ly" className="text-lg font-medium" prefetch={false}>
           Các đại lý
         </Link>
+        <Link href="/vat-dung" className="text-lg font-medium" prefetch={false}>
+          Vật dụng
+        </Link>
         <Link href="/blogs" className="text-lg font-medium" prefetch={false}>
           Tin tức
         </Link>
@@ -69,6 +72,9 @@ export default function NavBar() {
             </Link>
             <Link href="/dai-ly" className="text-lg font-medium" prefetch={false}>
               Các đại lý
+            </Link>
+            <Link href="/vat-dung" className="text-lg font-medium" prefetch={false}>
+              Vật dụng
             </Link>
             <Link href="/blogs" className="text-lg font-medium" prefetch={false}>
               Tin tức
