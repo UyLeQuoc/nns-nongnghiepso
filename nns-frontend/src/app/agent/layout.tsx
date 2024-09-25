@@ -72,38 +72,26 @@ export default function AdminLayout({
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
-                href="/admin/blogs"
+                href="/agent"
                 className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
               >
                 <PaperclipIcon className="h-5 w-5" />
-                <span className="sr-only">Blogs</span>
+                <span className="sr-only">Sản phẩm kinh doanh</span>
               </Link>
             </TooltipTrigger>
-            <TooltipContent side="right">Blogs</TooltipContent>
+            <TooltipContent side="right">Sản phẩm kinh doanh</TooltipContent>
           </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
-                href="/admin/agricultural-products"
+                href="/agent/farm-tool"
                 className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
               >
                 <Package className="h-5 w-5" />
-                <span className="sr-only">Nông Sản</span>
+                <span className="sr-only">Vật dụng</span>
               </Link>
             </TooltipTrigger>
-            <TooltipContent side="right">Nông Sản</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
-                href="/admin/users"
-                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-              >
-                <Users2 className="h-5 w-5" />
-                <span className="sr-only">Đại lý</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side="right">Đại lý</TooltipContent>
+            <TooltipContent side="right">Vật dụng</TooltipContent>
           </Tooltip>
         </nav>
         {/* <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
@@ -151,14 +139,14 @@ export default function AdminLayout({
                   className="flex items-center gap-4 px-2.5 text-foreground"
                 >
                   <PaperclipIcon className="h-5 w-5" />
-                  Blogs
+                  Sản phẩm kinh doanh
                 </Link>
                 <Link
                   href="/admin/users"
                   className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
                 >
                   <Package className="h-5 w-5" />
-                  Đại lý
+                  Vật dụng
                 </Link>
               </nav>
             </SheetContent>

@@ -52,11 +52,12 @@ export default function AgentProductPreferences() {
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user') || '{}')
+    console.log(user)
     setUserId(user.userId)
     fetchPreferences()
 
 
-  }, [])
+  }, [userId])
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,

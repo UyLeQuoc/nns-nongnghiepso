@@ -25,7 +25,7 @@ export default function NavBar() {
         <Link href="/" className="text-lg font-medium" prefetch={false}>
           Trang chủ
         </Link>
-        <Link href="#" className="text-lg font-medium" prefetch={false}>
+        <Link href="/gia-ca" className="text-lg font-medium" prefetch={false}>
           Giá cả
         </Link>
         <Link href="/dai-ly" className="text-lg font-medium" prefetch={false}>
@@ -37,7 +37,7 @@ export default function NavBar() {
         <Link href="/blogs" className="text-lg font-medium" prefetch={false}>
           Tin tức
         </Link>
-        <Link href="#" className="text-lg font-medium" prefetch={false}>
+        <Link href="/about" className="text-lg font-medium" prefetch={false}>
           Về chúng tôi
         </Link>
       </nav>
@@ -69,7 +69,7 @@ export default function NavBar() {
             <Link href="/" className="text-lg font-medium" prefetch={false}>
               Trang chủ
             </Link>
-            <Link href="#" className="text-lg font-medium" prefetch={false}>
+            <Link href="/gia-ca" className="text-lg font-medium" prefetch={false}>
               Giá cả
             </Link>
             <Link href="/dai-ly" className="text-lg font-medium" prefetch={false}>
@@ -81,7 +81,7 @@ export default function NavBar() {
             <Link href="/blogs" className="text-lg font-medium" prefetch={false}>
               Tin tức
             </Link>
-            <Link href="#" className="text-lg font-medium" prefetch={false}>
+            <Link href="/about" className="text-lg font-medium" prefetch={false}>
               Về chúng tôi
             </Link>
           </nav>
