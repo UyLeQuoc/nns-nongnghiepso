@@ -29,4 +29,13 @@
         public ProductTypeResponseDTO? ProductType { get; set; }
     }
 
+    public class ProductTypePriceDifferenceDTO
+    {
+        public int ProductTypeId { get; set; }
+        public string ProductTypeName { get; set; }
+        public decimal TodayPrice { get; set; }
+        public decimal YesterdayPrice { get; set; }
+        public decimal PriceDifference { get; set; }
+    }
+
 }

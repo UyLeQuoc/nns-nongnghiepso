@@ -23,27 +23,50 @@ namespace nns_backend.Repositories
 
             foreach (var preference in preferencesWithPrices)
             {
-                // Create a new ProductTypePrice entry for each valid row
-                var productTypePrice = new ProductTypePrice
+                var timeSinceLastUpdate = _currentTime.GetCurrentTime() - preference.UpdatedAt;
+
+                // Only create ProductTypePrice if TodayPrice is not null or 0
+                if (preference.TodayPrice != null && preference.TodayPrice > 0)
                 {
-                    ProductTypeId = preference.ProductTypeId,
-                    UserId = preference.UserId,
-                    Price = preference.TodayPrice,
-                    Note = preference.TodayPrice == 0 ? "Giá chưa cập nhật" : "",
-                    CreatedAt = priceUpdateDTO, // Set the provided date
-                    ModifiedAt = _currentTime.GetCurrentTime()
-                };
+                    // Determine if a note is needed based on last update time
+                    var productTypePrice = new ProductTypePrice
+                    {
+                        ProductTypeId = preference.ProductTypeId,
+                        UserId = preference.UserId,
+                        Price = preference.TodayPrice,
+                        Note = timeSinceLastUpdate.HasValue && timeSinceLastUpdate.Value.TotalHours > 24
+                            ? $"Giá của ngày {preference.UpdatedAt?.ToString("dd/MM/yyyy")}"
+                            : "", // Add a note only if it's been more than 24 hours
+                        CreatedAt = priceUpdateDTO,
+                        ModifiedAt = _currentTime.GetCurrentTime()
+                    };
 
-                _context.ProductTypePrices.Add(productTypePrice);
+                    _context.ProductTypePrices.Add(productTypePrice);
+                }
+                else
+                {
+                    // If TodayPrice is 0, still create ProductTypePrice but add the note
+                    var productTypePrice = new ProductTypePrice
+                    {
+                        ProductTypeId = preference.ProductTypeId,
+                        UserId = preference.UserId,
+                        Price = preference.TodayPrice, // It will be 0
+                        Note = $"Giá của ngày {preference.UpdatedAt?.ToString("dd/MM/yyyy")}", // Note includes the updated date
+                        CreatedAt = priceUpdateDTO,
+                        ModifiedAt = _currentTime.GetCurrentTime()
+                    };
 
-                preference.TodayPrice = 0;
-                preference.UpdatedAt = DateTime.UtcNow;
+                    _context.ProductTypePrices.Add(productTypePrice);
+                }
+
+                // No reset for TodayPrice as requested
                 _context.AgentProductPreferences.Update(preference);
             }
 
             // Save all changes to the database
             await _context.SaveChangesAsync();
         }
+
 
         public async Task<List<DailyAveragePriceDTO>> GetDailyAveragePriceAsync(int productTypeId)
         {
@@ -151,5 +174,47 @@ namespace nns_backend.Repositories
 
             return preference;
         }
+
+        public async Task<List<ProductTypePriceDifferenceDTO>> GetProductTypePricesWithDifferencesAsync(int userId, DateTime currentTime)
+        {
+            var currentDay = currentTime.TimeOfDay.Hours >= 8 ? currentTime.Date : currentTime.Date.AddDays(-1);
+            var previousDay = currentDay.AddDays(-1);
+
+            // Get today's prices for all product types of the user
+            var todayPrices = await _context.ProductTypePrices
+                .Where(p => p.UserId == userId && p.CreatedAt.Date == currentDay)
+                .ToListAsync();
+
+            // Get yesterday's prices for comparison
+            var yesterdayPrices = await _context.ProductTypePrices
+                .Where(p => p.UserId == userId && p.CreatedAt.Date == previousDay)
+                .ToListAsync();
+
+            var result = new List<ProductTypePriceDifferenceDTO>();
+
+            // Get all ProductTypes from AgentProductPreference table for the user
+            var preferences = await _context.AgentProductPreferences
+                .Where(p => p.UserId == userId)
+                .Include(p => p.ProductType)
+                .ToListAsync();
+
+            foreach (var preference in preferences)
+            {
+                var todayPrice = todayPrices.FirstOrDefault(p => p.ProductTypeId == preference.ProductTypeId)?.Price ?? 0;
+                var yesterdayPrice = yesterdayPrices.FirstOrDefault(p => p.ProductTypeId == preference.ProductTypeId)?.Price ?? 0;
+
+                result.Add(new ProductTypePriceDifferenceDTO
+                {
+                    ProductTypeId = preference.ProductTypeId,
+                    ProductTypeName = preference.ProductType.Name,
+                    TodayPrice = todayPrice,
+                    YesterdayPrice = yesterdayPrice,
+                    PriceDifference = todayPrice - yesterdayPrice
+                });
+            }
+
+            return result;
+        }
+
     }
 }

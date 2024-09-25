@@ -9,10 +9,12 @@ namespace nns_backend.Controllers
     public class AgentProductPreferenceController : ControllerBase
     {
         private readonly IAgentProductPreferenceRepository _repository;
+        private readonly ICurrentTime _currentTime;
 
-        public AgentProductPreferenceController(IAgentProductPreferenceRepository repository)
+        public AgentProductPreferenceController(IAgentProductPreferenceRepository repository, ICurrentTime currentTime)
         {
             _repository = repository;
+            _currentTime = currentTime;
         }
 
         // POST: api/AgentProductPreference/transfer-prices
@@ -85,5 +87,22 @@ namespace nns_backend.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
+
+        // GET: api/AgentProductPreference/prices-with-differences/{userId}
+        [HttpGet("prices-with-differences/{userId}")]
+        public async Task<IActionResult> GetProductTypePricesWithDifferences(int userId)
+        {
+            try
+            {
+                var currentTime = _currentTime.GetCurrentTime(); // Assuming _currentTime service is available
+                var result = await _repository.GetProductTypePricesWithDifferencesAsync(userId, currentTime);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
     }
 }

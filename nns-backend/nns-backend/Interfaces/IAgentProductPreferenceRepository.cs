@@ -10,5 +10,7 @@ namespace nns_backend.Interfaces
         Task<List<AgentProductPreferenceResponseDTO>> GetAgentProductPreferencesByUserIdAsync(int userId);
         Task<List<AgentProductPreferenceResponseDTO>> GetAgentProductPreferencesByProductTypeIdAsync(int productTypeId);
         Task<AgentProductPreference> UpdateAgentProductPreferenceAsync(UpdateAgentProductPreferenceDTO updateDTO);
+        Task<List<ProductTypePriceDifferenceDTO>> GetProductTypePricesWithDifferencesAsync(int userId, DateTime currentTime);
+
     }
 }
