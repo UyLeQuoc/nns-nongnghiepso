@@ -35,6 +35,7 @@ namespace nns_backend.DTO
     {
         public int ProductTypeId { get; set; }
         public ProductType ProductType { get; set; }
+        public AgentProductPreference AgentProductPreference { get; set; }
         public decimal TodayPrice { get; set; }
         public decimal YesterdayPrice { get; set; }
         public decimal PriceDifference { get; set; }

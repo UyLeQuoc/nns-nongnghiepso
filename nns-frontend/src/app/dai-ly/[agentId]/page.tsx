@@ -1,6 +1,6 @@
 "use client"
 
-import { fetchPreferencesByUserId } from "@/apis/analystApi"
+import { fetchPreferencesByUserId, fetchPriceDifferencesByUserId } from "@/apis/analystApi"
 import { getUserById } from "@/apis/userApi"
 import BackgroundAnimation from "@/components/background-animation"
 import NavBar from "@/components/nav-bar"
@@ -26,6 +26,8 @@ interface AgentProductPreferenceResponseDTO {
   updatedAt: string
   productType: ProductType
   user?: any
+  yesterdayPrice: number
+  priceDifference: number
 }
 
 interface UserInfo {
@@ -49,7 +51,7 @@ export default function AgentProductPreferences({ params }: { params: { agentId:
 
   const fetchPreferences = async () => {
     try {
-      const currentUserPreferences = await fetchPreferencesByUserId(+params.agentId)
+      const currentUserPreferences = await fetchPriceDifferencesByUserId(+params.agentId)
       setUserPreferences(currentUserPreferences)
     } catch (error) {
       console.error("Error fetching preferences:", error)
@@ -155,12 +157,22 @@ function PreferenceCard({ preference }: { preference: AgentProductPreferenceResp
       </CardHeader>
       <CardContent>
         <p className="text-sm text-gray-600 mb-2">{preference.productType.description}</p>
-        <p className="font-semibold">Today Price: ${preference.todayPrice.toFixed(2)}</p>
+        
+        {/* Display today's price, yesterday's price, and the price difference */}
+        <div className="mt-4">
+          <p className="font-semibold">Giá hôm nay: {preference.todayPrice.toLocaleString()} VND</p>
+          <p className="font-semibold">Giá hôm qua: {preference.yesterdayPrice.toLocaleString()} VND</p>
+          <p className="font-semibold">
+            Chênh lệch giá: {preference?.priceDifference >= 0 ? '+' : ''}{preference.priceDifference.toLocaleString()} VND
+          </p>
+        </div>
+
         <p className="mt-2">{preference.description}</p>
       </CardContent>
     </Card>
   )
 }
+
 
 function LoadingSkeleton() {
   return (

@@ -16,6 +16,16 @@ export const fetchPreferencesByUserId = async (userId: number) => {
   }
 };
 
+export const fetchPriceDifferencesByUserId = async (userId: number) => {
+  try {
+    const response = await axiosClient.get(`/api/AgentProductPreference/prices-with-differences/${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching preferences:", error);
+    throw error; 
+  }
+};
+
 export const updateAgentProductPreference = async (
   userId: number,
   productTypeId: number,

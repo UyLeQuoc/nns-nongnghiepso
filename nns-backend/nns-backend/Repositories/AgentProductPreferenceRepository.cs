@@ -207,6 +207,7 @@ namespace nns_backend.Repositories
                 {
                     ProductTypeId = preference.ProductTypeId,
                     ProductType = preference.ProductType,
+                    AgentProductPreference = preference,
                     TodayPrice = todayPrice,
                     YesterdayPrice = yesterdayPrice,
                     PriceDifference = todayPrice - yesterdayPrice
