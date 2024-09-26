@@ -1,4 +1,6 @@
-﻿namespace nns_backend.DTO
+﻿using nns_backend.Entities;
+
+namespace nns_backend.DTO
 {
     public class AgentProductPreferenceCreateDTO
     {
@@ -32,7 +34,7 @@
     public class ProductTypePriceDifferenceDTO
     {
         public int ProductTypeId { get; set; }
-        public string ProductTypeName { get; set; }
+        public ProductType ProductType { get; set; }
         public decimal TodayPrice { get; set; }
         public decimal YesterdayPrice { get; set; }
         public decimal PriceDifference { get; set; }

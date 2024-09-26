@@ -206,7 +206,7 @@ namespace nns_backend.Repositories
                 result.Add(new ProductTypePriceDifferenceDTO
                 {
                     ProductTypeId = preference.ProductTypeId,
-                    ProductTypeName = preference.ProductType.Name,
+                    ProductType = preference.ProductType,
                     TodayPrice = todayPrice,
                     YesterdayPrice = yesterdayPrice,
                     PriceDifference = todayPrice - yesterdayPrice

@@ -83,6 +83,8 @@ export default function AgentProductPreferences() {
         title: "Success",
         description: `Updated preference for ${preference.productType.name}`,
       })
+      await fetchPreferences()
+
     } catch (error) {
       toast({
         title: "Error",
@@ -161,7 +163,7 @@ const OtherUserPreferences = ({ productTypeId }: { productTypeId: number }) => {
   }, [])
 
   return (
-    <div className="mt-4">
+    <div id={`other-user-pref-${productTypeId}`} className="mt-4">
       <h2 className="text-2xl font-bold mb-2">Other Users Preferences</h2>
 
       {loading ? (
