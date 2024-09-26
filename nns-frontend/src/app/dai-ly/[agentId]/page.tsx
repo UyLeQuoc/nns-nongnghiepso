@@ -7,6 +7,8 @@ import NavBar from "@/components/nav-bar"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useToast } from "@/hooks/use-toast"
+import { format } from "date-fns"
+import { ArrowDown, ArrowUp } from "lucide-react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
@@ -28,6 +30,7 @@ interface AgentProductPreferenceResponseDTO {
   user?: any
   yesterdayPrice: number
   priceDifference: number
+  agentProductPreference: any
 }
 
 interface UserInfo {
@@ -41,6 +44,38 @@ interface UserInfo {
   description: string
   address: string
 }
+function LoadingSkeleton() {
+  return (
+    <div className="container mx-auto p-4 space-y-6">
+      <Card>
+        <CardContent className="flex items-center space-x-4 p-6">
+          <Skeleton className="h-24 w-24 rounded-full" />
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-[250px]" />
+            <Skeleton className="h-4 w-[200px]" />
+            <Skeleton className="h-4 w-[150px]" />
+          </div>
+        </CardContent>
+      </Card>
+      <Skeleton className="h-8 w-[300px]" />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {[...Array(3)].map((_, i) => (
+          <Card key={i}>
+            <CardHeader>
+              <Skeleton className="h-6 w-[150px]" />
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-[100px]" />
+              <Skeleton className="h-4 w-full" />
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 
 export default function AgentProductPreferences({ params }: { params: { agentId: string } }) {
   const router = useRouter()
@@ -150,58 +185,49 @@ function UserInfoCard({ userInfo }: { userInfo: UserInfo | null }) {
 }
 
 function PreferenceCard({ preference }: { preference: AgentProductPreferenceResponseDTO }) {
+  const isPriceIncreased = preference.priceDifference > 0
+  const isPriceDecreased = preference.priceDifference < 0
+
   return (
-    <Card>
+    <Card className="overflow-hidden">
       <CardHeader>
         <CardTitle>{preference.productType.name}</CardTitle>
       </CardHeader>
-      <CardContent>
-        <p className="text-sm text-gray-600 mb-2">{preference.productType.description}</p>
+      <CardContent className="p-6 pt-0">
+        <p className="text-sm text-gray-600 mb-4">{preference.productType.description}</p>
         
-        {/* Display today's price, yesterday's price, and the price difference */}
-        <div className="mt-4">
-          <p className="font-semibold">Giá hôm nay: {preference.todayPrice.toLocaleString()} VND</p>
-          <p className="font-semibold">Giá hôm qua: {preference.yesterdayPrice.toLocaleString()} VND</p>
-          <p className="font-semibold">
-            Chênh lệch giá: {preference?.priceDifference >= 0 ? '+' : ''}{preference.priceDifference.toLocaleString()} VND
-          </p>
+        <div className="space-y-3">
+          <div className="flex justify-between items-center">
+            <span className="text-sm font-medium">Giá hôm nay:</span>
+            <span className="text-lg font-bold">{preference.todayPrice.toLocaleString()} VND</span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-sm font-medium">Giá hôm qua:</span>
+            <span className="text-lg font-semibold text-gray-600">{preference.yesterdayPrice.toLocaleString()} VND</span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-sm font-medium">Chênh lệch giá:</span>
+            <span className={`text-lg font-bold flex items-center ${
+              isPriceIncreased ? 'text-green-600' : isPriceDecreased ? 'text-red-600' : 'text-gray-600'
+            }`}>
+              {isPriceIncreased && <ArrowUp className="w-4 h-4 mr-1" />}
+              {isPriceDecreased && <ArrowDown className="w-4 h-4 mr-1" />}
+              {preference.priceDifference >= 0 ? '+' : ''}{preference.priceDifference.toLocaleString()} VND
+            </span>
+          </div>
         </div>
 
-        <p className="mt-2">{preference.description}</p>
+        <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+          <h4 className="text-sm font-semibold mb-2">Mô tả:</h4>
+          <p className="text-sm text-gray-700">{preference.agentProductPreference?.description}</p>
+        </div>
+
+        <div className="mt-4 text-right">
+          <p className="text-xs text-gray-500">
+            Cập nhật lần cuối: {format(new Date(preference?.agentProductPreference?.updatedAt), "dd/MM/yyyy HH:mm")}
+          </p>
+        </div>
       </CardContent>
     </Card>
-  )
-}
-
-
-function LoadingSkeleton() {
-  return (
-    <div className="container mx-auto p-4 space-y-6">
-      <Card>
-        <CardContent className="flex items-center space-x-4 p-6">
-          <Skeleton className="h-24 w-24 rounded-full" />
-          <div className="space-y-2">
-            <Skeleton className="h-4 w-[250px]" />
-            <Skeleton className="h-4 w-[200px]" />
-            <Skeleton className="h-4 w-[150px]" />
-          </div>
-        </CardContent>
-      </Card>
-      <Skeleton className="h-8 w-[300px]" />
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {[...Array(3)].map((_, i) => (
-          <Card key={i}>
-            <CardHeader>
-              <Skeleton className="h-6 w-[150px]" />
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <Skeleton className="h-4 w-full" />
-              <Skeleton className="h-4 w-[100px]" />
-              <Skeleton className="h-4 w-full" />
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-    </div>
   )
 }
