@@ -41,4 +41,28 @@ namespace nns_backend.DTO
         public decimal PriceDifference { get; set; }
     }
 
+    public class AgriculturalProductWithPriceDTO
+    {
+        public int Id { get; set; }
+        public string? Name { get; set; }
+        public string? Description { get; set; }
+        public string? ImageUrl { get; set; }
+        public decimal? BeginPrice { get; set; }
+        public List<ProductTypeWithPriceDTO> ProductTypes { get; set; }
+    }
+
+    public class ProductTypeWithPriceDTO
+    {
+        public int Id { get; set; }
+        public string? Name { get; set; }
+        public string? Description { get; set; }
+        public List<AgentProductPriceDTO> Prices { get; set; }
+    }
+
+    public class AgentProductPriceDTO
+    {
+        public int UserId { get; set; }
+        public decimal? Price { get; set; }
+        public string? Note { get; set; }
+    }
 }

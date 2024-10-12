@@ -217,5 +217,38 @@ namespace nns_backend.Repositories
             return result;
         }
 
+        public async Task<List<AgriculturalProductWithPriceDTO>> GetAllAgriculturalProductsWithPrices(DateTime targetDate)
+        {
+            var products = await _context.AgriculturalProducts
+                .Include(p => p.ProductTypes)
+                    .ThenInclude(pt => pt.ProductTypePrices) // Include the ProductTypePrices
+                .ToListAsync();
+
+            var result = products.Select(p => new AgriculturalProductWithPriceDTO
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Description = p.Description,
+                ImageUrl = p.ImageUrl,
+                BeginPrice = p.BeginPrice,
+                ProductTypes = p.ProductTypes.Select(pt => new ProductTypeWithPriceDTO
+                {
+                    Id = pt.Id,
+                    Name = pt.Name,
+                    Description = pt.Description,
+                    Prices = pt.ProductTypePrices
+                        .Where(ptp => ptp.CreatedAt.Date == targetDate.Date)
+                        .Select(ptp => new AgentProductPriceDTO
+                        {
+                            UserId = ptp.UserId,
+                            Price = ptp.Price,
+                            Note = ptp.Note
+                        }).ToList()
+                }).ToList()
+            }).ToList();
+
+            return result;
+        }
+
     }
 }

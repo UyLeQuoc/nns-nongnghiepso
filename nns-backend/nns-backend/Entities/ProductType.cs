@@ -8,5 +8,6 @@
         public virtual AgriculturalProduct AgriculturalProduct { get; set; }
 
         public virtual ICollection<AgentProductPreference> AgentProductPreferences { get; set; }
+        public virtual ICollection<ProductTypePrice> ProductTypePrices { get; set; }
     }
 }

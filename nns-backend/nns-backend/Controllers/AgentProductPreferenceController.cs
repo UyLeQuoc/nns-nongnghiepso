@@ -10,11 +10,13 @@ namespace nns_backend.Controllers
     {
         private readonly IAgentProductPreferenceRepository _repository;
         private readonly ICurrentTime _currentTime;
+        private readonly ILogger<AgentProductPreferenceController> _logger;
 
-        public AgentProductPreferenceController(IAgentProductPreferenceRepository repository, ICurrentTime currentTime)
+        public AgentProductPreferenceController(IAgentProductPreferenceRepository repository, ICurrentTime currentTime, ILogger<AgentProductPreferenceController> logger)
         {
             _repository = repository;
             _currentTime = currentTime;
+            _logger = logger;
         }
 
         // POST: api/AgentProductPreference/transfer-prices
@@ -104,5 +106,24 @@ namespace nns_backend.Controllers
             }
         }
 
+        [HttpGet("products-with-prices")]
+        public async Task<ActionResult<List<AgriculturalProductWithPriceDTO>>> GetProductsWithPrices()
+        {
+            try
+            {
+                var currentTime = _currentTime.GetCurrentTime();
+                var todayDate = currentTime.Date;
+                var targetDate = (currentTime.Hour < 8) ? todayDate.AddDays(-1) : todayDate;
+
+                // Retrieve the products and their prices
+                var products = await _repository.GetAllAgriculturalProductsWithPrices(targetDate);
+
+                return Ok(products);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+        }
     }
 }
