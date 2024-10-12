@@ -238,6 +238,18 @@ namespace nns_backend.Repositories
                         .Select(ptp => ptp.Price))
                     .DefaultIfEmpty()
                     .Average(),
+                TodayMinPrice = p.ProductTypes
+                    .SelectMany(pt => pt.ProductTypePrices
+                        .Where(ptp => ptp.CreatedAt.Date == targetDate.Date)
+                        .Select(ptp => ptp.Price))
+                    .DefaultIfEmpty() // Ensure we handle cases with no prices
+                    .Min(), // Calculate the minimum price
+                TodayMaxPrice = p.ProductTypes
+                    .SelectMany(pt => pt.ProductTypePrices
+                        .Where(ptp => ptp.CreatedAt.Date == targetDate.Date)
+                        .Select(ptp => ptp.Price))
+                    .DefaultIfEmpty() // Ensure we handle cases with no prices
+                    .Max(), // Calculate the maximum price
                 ProductTypes = p.ProductTypes.Select(pt => new ProductTypeWithPriceDTO
                 {
                     Id = pt.Id,

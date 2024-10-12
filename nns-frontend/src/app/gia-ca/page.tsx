@@ -30,6 +30,8 @@ interface Product {
   imageUrl: string;
   beginPrice: number;
   averagePrice: number | null;
+  todayMinPrice: number | null;
+  todayMaxPrice: number | null;
   productTypes: ProductType[];
 }
 
@@ -77,18 +79,20 @@ export default function Page() {
         {products.map(product => (
           <div key={product.id} className="bg-white rounded-xl shadow-lg overflow-hidden h-auto">
             <div className="flex flex-col md:flex-row flex-1">
-              <div className="md:w-1/3 relative h-64 md:h-auto">
+              <div className="md:w-1/3 relative aspect-video">
                 <Image 
                   src={product.imageUrl} 
                   alt={product.name} 
                   layout="fill" 
                   objectFit="cover"
-                  className="transition-transform duration-300"
+                  className="transition-transform duration-300 e"
                 />
               </div>
               <div className="md:w-2/3 p-6">
                 <h2 className="text-2xl font-semibold text-green-700 mb-2">{product.name}</h2>
+                <p className="text-lg font-medium text-green-600 mb-2">Giá thấp nhất: {formatPrice(product?.todayMinPrice ?? 0)}</p>
                 <p className="text-lg font-medium text-green-600 mb-2">Giá trung bình: {formatPrice(product?.averagePrice ?? 0)}</p>
+                <p className="text-lg font-medium text-green-600 mb-2">Giá cao nhất: {formatPrice(product?.todayMaxPrice ?? 0)}</p>
                 <p className="text-sm text-gray-600 mb-4">{product.description}</p>
               </div>
             </div>

@@ -49,6 +49,8 @@ namespace nns_backend.DTO
         public string? ImageUrl { get; set; }
         public decimal? BeginPrice { get; set; }
         public decimal? AveragePrice { get; set; }
+        public decimal? TodayMinPrice { get; set; } // Minimum price for today
+        public decimal? TodayMaxPrice { get; set; } // Maximum price for today
         public List<ProductTypeWithPriceDTO> ProductTypes { get; set; }
     }
 
