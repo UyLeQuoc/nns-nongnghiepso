@@ -73,9 +73,9 @@ export default function Page() {
         <NavBar />
         <main className="container mx-auto py-12 px-2">
           <h2 className="text-3xl font-bold text-[#DCFFD7] mb-6">Giá sản phẩm hôm nay</h2>
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 h-auto">
         {products.map(product => (
-          <div key={product.id} className="bg-white rounded-xl shadow-lg overflow-hidden">
+          <div key={product.id} className="bg-white rounded-xl shadow-lg overflow-hidden h-auto">
             <div className="flex flex-col md:flex-row flex-1">
               <div className="md:w-1/3 relative h-64 md:h-auto">
                 <Image 
@@ -83,7 +83,7 @@ export default function Page() {
                   alt={product.name} 
                   layout="fill" 
                   objectFit="cover"
-                  className="transition-transform duration-300 hover:scale-105"
+                  className="transition-transform duration-300"
                 />
               </div>
               <div className="md:w-2/3 p-6">
@@ -125,22 +125,21 @@ export default function Page() {
                           <div className="space-y-2">
                             {type.prices.map((price, index) => (
                               <div key={index} className="flex justify-between items-center text-sm bg-green-50 p-2 rounded-md">
-                                <div className="flex items-center space-x-2">
+                                <div className="flex items-center space-x-2 flex-1">
                                   <Image
                                     src={price.user.imageUrl}
                                     alt={price.user.fullName}
                                     width={24}
                                     height={24}
-                                    className="rounded-full"
+                                    className="rounded-full aspect-square object-cover"
                                   />
-                                  <span className="text-gray-700">{price.user.fullName}</span>
+                                  <span className="text-gray-700 hover:underline cursor-pointer">{price.user.fullName}</span>
                                 </div>
-                                <span className="text-gray-600 flex items-center">
+                                <span className="text-gray-600 flex items-center mr-2 md:mr-10">
                                   <Calendar className="w-4 h-4 mr-1 text-green-600" />
                                   {price.note}
                                 </span>
                                 <span className="text-green-700 font-medium flex items-center">
-                                  <DollarSign className="w-4 h-4 mr-1 text-green-600" />
                                   {formatPrice(price.price)}
                                 </span>
                               </div>
