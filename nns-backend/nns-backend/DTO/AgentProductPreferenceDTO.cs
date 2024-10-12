@@ -62,6 +62,7 @@ namespace nns_backend.DTO
     public class AgentProductPriceDTO
     {
         public int UserId { get; set; }
+        public User User { get; set; }
         public decimal? Price { get; set; }
         public string? Note { get; set; }
     }

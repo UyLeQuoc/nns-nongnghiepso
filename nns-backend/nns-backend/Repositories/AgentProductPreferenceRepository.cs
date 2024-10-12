@@ -241,6 +241,7 @@ namespace nns_backend.Repositories
                         .Select(ptp => new AgentProductPriceDTO
                         {
                             UserId = ptp.UserId,
+                            User = ptp.User,
                             Price = ptp.Price,
                             Note = ptp.Note
                         }).ToList()
