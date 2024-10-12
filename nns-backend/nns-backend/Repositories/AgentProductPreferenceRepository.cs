@@ -222,6 +222,7 @@ namespace nns_backend.Repositories
             var products = await _context.AgriculturalProducts
                 .Include(p => p.ProductTypes)
                     .ThenInclude(pt => pt.ProductTypePrices) // Include the ProductTypePrices
+                        .ThenInclude(pt => pt.User)
                 .ToListAsync();
 
             var result = products.Select(p => new AgriculturalProductWithPriceDTO
