@@ -232,6 +232,12 @@ namespace nns_backend.Repositories
                 Description = p.Description,
                 ImageUrl = p.ImageUrl,
                 BeginPrice = p.BeginPrice,
+                AveragePrice = p.ProductTypes
+                    .SelectMany(pt => pt.ProductTypePrices
+                        .Where(ptp => ptp.CreatedAt.Date == targetDate.Date)
+                        .Select(ptp => ptp.Price))
+                    .DefaultIfEmpty()
+                    .Average(),
                 ProductTypes = p.ProductTypes.Select(pt => new ProductTypeWithPriceDTO
                 {
                     Id = pt.Id,

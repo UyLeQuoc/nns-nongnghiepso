@@ -48,6 +48,7 @@ namespace nns_backend.DTO
         public string? Description { get; set; }
         public string? ImageUrl { get; set; }
         public decimal? BeginPrice { get; set; }
+        public decimal? AveragePrice { get; set; }
         public List<ProductTypeWithPriceDTO> ProductTypes { get; set; }
     }
 
