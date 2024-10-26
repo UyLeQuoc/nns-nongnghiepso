@@ -45,6 +45,6 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            cd /home/uydev/code/nns
+            cd /home/uydev/devops-vps/nns
             docker compose pull
             docker compose up -d
