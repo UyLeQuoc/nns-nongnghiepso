@@ -33,7 +33,7 @@ export default function UserDashboard() {
   const [users, setUsers] = useState<User[]>([])
 
   useEffect(() => {
-    fetch('https://nongnghiepso.uydev.id.vn/api/User/all')
+    fetch('https://nns-api.uydev.id.vn/api/User/all')
       .then(response => response.json())
       .then(data => setUsers(data))
       .catch(error => console.error('Error fetching users:', error))

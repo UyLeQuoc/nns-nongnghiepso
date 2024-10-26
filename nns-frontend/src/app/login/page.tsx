@@ -33,7 +33,7 @@ export default function Login() {
     setSuccessMessage(null)
 
     try {
-      const response = await axios.post('https://nongnghiepso.uydev.id.vn/api/User/login', loginData)
+      const response = await axios.post('https://nns-api.uydev.id.vn/api/User/login', loginData)
       setSuccessMessage('Login successful!')
 
       console.log('Login Response:', response.data)

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosClient = axios.create({
-  baseURL: 'https://nongnghiepso.uydev.id.vn',
+  baseURL: 'https://nns-api.uydev.id.vn',
   headers: {
     'Content-Type': 'application/json',
   },

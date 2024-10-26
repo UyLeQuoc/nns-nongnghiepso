@@ -54,7 +54,7 @@ export default function AgentSignupForm() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('https://nongnghiepso.uydev.id.vn/AgriculturalProduct')
+        const response = await axios.get('https://nns-api.uydev.id.vn/AgriculturalProduct')
         setAgriculturalProducts(response.data)
       } catch (error) {
         setError('Failed to fetch agricultural products')
@@ -114,7 +114,7 @@ export default function AgentSignupForm() {
     setError(null)
 
     try {
-      const response = await axios.post(`https://nongnghiepso.uydev.id.vn/api/User/signup-agent`, agentData)
+      const response = await axios.post(`https://nns-api.uydev.id.vn/api/User/signup-agent`, agentData)
       console.log('Agent created:', response.data)
       alert('Agent created successfully!')
       router.push('/login')

@@ -41,7 +41,7 @@ export default function Page() {
   const [expandedTypes, setExpandedTypes] = useState<{ [key: number]: number[] }>({})
 
   useEffect(() => {
-    fetch('https://nongnghiepso.uydev.id.vn/api/AgentProductPreference/products-with-prices')
+    fetch('https://nns-api.uydev.id.vn/api/AgentProductPreference/products-with-prices')
       .then(response => response.json())
       .then(data => setProducts(data))
       .catch(error => console.error('Error fetching products:', error))
