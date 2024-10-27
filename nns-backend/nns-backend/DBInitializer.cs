@@ -7,100 +7,81 @@ namespace nns_backend
     {
         public static async Task Initialize(NNSDBContext context, UserManager<User> userManager)
         {
-            //Check if admin is not have in db add admin
-            if (context.Users.Where(u => u.UserName == "admin").FirstOrDefault() == null)
+            try
             {
+                // Add Roles if they don't exist
                 if (!context.Roles.Any())
                 {
                     var roles = new List<Role>
-                {
-                    new Role
                     {
-                        Name = "Admin",
-                        NormalizedName = "ADMIN"
-                    },
-                    new Role
-                    {
-                        Name = "Agent",
-                        NormalizedName = "AGENT"
-                    }
-                };
+                        new Role { Name = "ADMIN", NormalizedName = "ADMIN" },
+                        new Role { Name = "AGENT", NormalizedName = "AGENT" }
+                    };
 
-                    //Add Admin
-                    var user = new User
+                    await context.Roles.AddRangeAsync(roles);
+                    await context.SaveChangesAsync();
+                }
+
+                // Add Admin User if it doesn't exist
+                if (!context.Users.Any(u => u.UserName == "admin"))
+                {
+                    var adminUser = new User
                     {
                         UserName = "admin",
                         Email = "admin@gmail.com"
                     };
-                    await userManager.CreateAsync(user, "123456");
-                    await userManager.AddToRoleAsync(user, "ADMIN");
+                    var result = await userManager.CreateAsync(adminUser, "123456");
+                    if (result.Succeeded)
+                    {
+                        await userManager.AddToRoleAsync(adminUser, "ADMIN");
+                    }
                 }
 
-                //Add Blogs
+                // Add Blogs if they don't exist
                 if (!context.Blogs.Any())
                 {
                     var blogs = new List<Blog>
-                {
-                    new Blog
                     {
-                        Title = "Bèo hoa dâu – Tiềm năng lớn trong sản xuất nông nghiệp",
-                        Caption = "Bèo hoa dâu có nhiều tiềm năng lớn trong nông nghiệp như: giảm phát thải khí nhà kính, giảm chi phí về phân bón, sản xuất nông sản sạch, xanh… Mặc dù tiềm năng rất lớn nhưng bèo hoa dâu chưa thật sự đi vào sản xuất lúa bền vững. ",
-                        YoutubeLink = "https://www.youtube.com/watch?v=1hwRteliFaw"
-                    },
-                    new Blog
-                    {
-                        Title = "Tỷ phú nuôi lợn \"không cần tắm\", bỏ túi tiền tỷ, tránh dịch bệnh",
-                        Caption = "VTC16 | Tỷ phú nuôi lợn \"không cần tắm\", bỏ túi tiền tỷ, tránh dịch bệnh. Ông Nguyễn Văn Sợi, Hà Nội chăn nuôi lợn không cần tắm, ông dùng đệm lót sinh học và men vi sinh, bí quyết nào giúp ông Sợi tránh được bệnh dịch tả lợn Châu Phi và kiếm tiền tỷ?",
-                        YoutubeLink = "https://www.youtube.com/watch?v=4B6pQPEh_X8"
-                    }
-                };
+                        new Blog
+                        {
+                            Title = "Bèo hoa dâu – Tiềm năng lớn trong sản xuất nông nghiệp",
+                            Caption = "Bèo hoa dâu có nhiều tiềm năng lớn trong nông nghiệp như: giảm phát thải khí nhà kính, giảm chi phí về phân bón, sản xuất nông sản sạch, xanh… Mặc dù tiềm năng rất lớn nhưng bèo hoa dâu chưa thật sự đi vào sản xuất lúa bền vững.",
+                            YoutubeLink = "https://www.youtube.com/watch?v=1hwRteliFaw"
+                        },
+                        new Blog
+                        {
+                            Title = "Tỷ phú nuôi lợn \"không cần tắm\", bỏ túi tiền tỷ, tránh dịch bệnh",
+                            Caption = "VTC16 | Tỷ phú nuôi lợn \"không cần tắm\", bỏ túi tiền tỷ, tránh dịch bệnh. Ông Nguyễn Văn Sợi, Hà Nội chăn nuôi lợn không cần tắm, ông dùng đệm lót sinh học và men vi sinh, bí quyết nào giúp ông Sợi tránh được bệnh dịch tả lợn Châu Phi và kiếm tiền tỷ?",
+                            YoutubeLink = "https://www.youtube.com/watch?v=4B6pQPEh_X8"
+                        }
+                    };
                     await context.Blogs.AddRangeAsync(blogs);
                     await context.SaveChangesAsync();
                 }
 
-                //Add Roles
-                try
+                // Add Agent Users if they don't exist
+                var agents = new List<User>
                 {
-                    if (!context.Roles.Any())
-                    {
-                        var roles = new List<Role>
-                {
-                    new Role
-                    {
-                        Name = "Admin",
-                        NormalizedName = "ADMIN"
-                    },
-                    new Role
-                    {
-                        Name = "Agent",
-                        NormalizedName = "AGENT"
-                    }
+                    new User { UserName = "agent1", Email = "agent1@gmail.com" },
+                    new User { UserName = "agent2", Email = "agent2@gmail.com" }
                 };
-                        await context.Roles.AddRangeAsync(roles);
-                        await context.SaveChangesAsync();
 
-                        //Add Agent
-                        var user1 = new User
+                foreach (var agent in agents)
+                {
+                    if (!context.Users.Any(u => u.UserName == agent.UserName))
+                    {
+                        var result = await userManager.CreateAsync(agent, "123456");
+                        if (result.Succeeded)
                         {
-                            UserName = "agent1",
-                            Email = "agent1@gmail.com"
-                        };
-                        await userManager.CreateAsync(user1, "123456");
-                        await userManager.AddToRoleAsync(user1, "AGENT");
-
-                        var user2 = new User
-                        {
-                            UserName = "agent2",
-                            Email = "agent2@gmail.com"
-                        };
-                        await userManager.CreateAsync(user2, "123456");
-                        await userManager.AddToRoleAsync(user2, "AGENT");
+                            await userManager.AddToRoleAsync(agent, "AGENT");
+                        }
                     }
                 }
-                catch (Exception e)
-                {
-                    throw e;
-                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception if needed and rethrow
+                throw new InvalidOperationException("Error initializing database.", ex);
             }
         }
     }
