@@ -258,7 +258,7 @@ function ProfileHeader({ imagePreview, thumbnailPreview }: { imagePreview: strin
           <img src={thumbnailPreview} alt="Thumbnail Preview" className="object-cover w-full h-full" />
         ) : (
           <Image
-            src="https://techcrunch.com/wp-content/uploads/2017/02/android-studio-logo.png?w=800"
+            src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
             alt="Wireframe heart background"
             width={1200}
             height={300}
@@ -272,7 +272,7 @@ function ProfileHeader({ imagePreview, thumbnailPreview }: { imagePreview: strin
             <img src={imagePreview} alt="Profile Preview" className="rounded-full h-32 w-32 object-cover" />
           ) : (
             <Image
-              src="https://techcrunch.com/wp-content/uploads/2017/02/android-studio-logo.png?w=800"
+              src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
               alt="Profile picture"
               width={100}
               height={100}
