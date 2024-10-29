@@ -125,5 +125,47 @@ namespace nns_backend.Controllers
                 return BadRequest(new { message = e.Message });
             }
         }
+
+        // GET: api/AgentProductPreference/user/{userId}/product/{productTypeId}/daily-prices
+        [HttpGet("user/{userId}/product/{productTypeId}/daily-prices")]
+        public async Task<IActionResult> GetDailyPricesForUserProductType(int userId, int productTypeId)
+        {
+            try
+            {
+                var dailyPrices = await _repository.GetDailyPricesForUserProductTypeAsync(userId, productTypeId);
+                if (dailyPrices == null || dailyPrices.Count == 0)
+                {
+                    return NotFound("No daily prices found for the specified user and product type.");
+                }
+                return Ok(dailyPrices);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error in GetDailyPricesForUserProductType: {ex.Message}");
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        // GET: api/AgentProductPreference/product/{productTypeId}/daily-prices
+        [HttpGet("product/{productTypeId}/daily-prices")]
+        public async Task<IActionResult> GetDailyPricesForProductType(int productTypeId)
+        {
+            try
+            {
+                var dailyPrices = await _repository.GetDailyPricesForProductTypeAsync(productTypeId);
+                if (dailyPrices == null || dailyPrices.Count == 0)
+                {
+                    return NotFound("No daily prices found for the specified product type.");
+                }
+                return Ok(dailyPrices);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error in GetDailyPricesForProductType: {ex.Message}");
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+
     }
 }

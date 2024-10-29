@@ -69,4 +69,11 @@ namespace nns_backend.DTO
         public decimal? Price { get; set; }
         public string? Note { get; set; }
     }
+
+    public class DailyPriceDTO
+    {
+        public DateTime Date { get; set; }
+        public decimal Price { get; set; }
+        public string Note { get; set; } // Thêm Note vào DTO
+    }
 }

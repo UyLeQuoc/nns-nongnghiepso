@@ -4,12 +4,14 @@ import { fetchPreferencesByUserId, fetchPriceDifferencesByUserId } from "@/apis/
 import { getUserById } from "@/apis/userApi"
 import BackgroundAnimation from "@/components/background-animation"
 import NavBar from "@/components/nav-bar"
+import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useToast } from "@/hooks/use-toast"
 import { format } from "date-fns"
 import { ArrowDown, ArrowUp } from "lucide-react"
 import Image from "next/image"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
@@ -130,7 +132,7 @@ export default function AgentProductPreferences({ params }: { params: { agentId:
       <h2 className="text-3xl font-bold text-[#DCFFD7] mb-6 mt-8">Nông sản kinh doanh</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {userPreferences.map((pref) => (
-          <PreferenceCard key={pref.productTypeId} preference={pref} />
+          <PreferenceCard key={pref.productTypeId} preference={pref} agentId={params.agentId} />
         ))}
       </div>
       </main>
@@ -184,7 +186,7 @@ function UserInfoCard({ userInfo }: { userInfo: UserInfo | null }) {
   )
 }
 
-function PreferenceCard({ preference }: { preference: AgentProductPreferenceResponseDTO }) {
+function PreferenceCard({ preference, agentId }: { preference: AgentProductPreferenceResponseDTO, agentId: string }) {
   const isPriceIncreased = preference.priceDifference > 0
   const isPriceDecreased = preference.priceDifference < 0
 
@@ -221,8 +223,13 @@ function PreferenceCard({ preference }: { preference: AgentProductPreferenceResp
           <h4 className="text-sm font-semibold mb-2">Mô tả:</h4>
           <p className="text-sm text-gray-700">{preference.agentProductPreference?.description}</p>
         </div>
+        {/* xem lich sử giá */}
+        
 
-        <div className="mt-4 text-right">
+        <div className="mt-4 flex items-center justify-between">
+          <Link href={`/dai-ly/${agentId}/${preference.productTypeId}`}>
+            <Button>Xem lịch sử giá</Button>
+          </Link>
           <p className="text-xs text-gray-500">
             Cập nhật lần cuối: {format(new Date(preference?.agentProductPreference?.updatedAt), "dd/MM/yyyy HH:mm")}
           </p>

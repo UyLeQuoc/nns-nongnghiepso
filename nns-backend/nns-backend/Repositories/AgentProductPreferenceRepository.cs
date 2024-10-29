@@ -270,5 +270,41 @@ namespace nns_backend.Repositories
             return result;
         }
 
+        public async Task<List<DailyPriceDTO>> GetDailyPricesForUserProductTypeAsync(int userId, int productTypeId)
+        {
+            var dailyPrices = await _context.ProductTypePrices
+                .Where(p => p.UserId == userId && p.ProductTypeId == productTypeId)
+                .GroupBy(p => p.CreatedAt.Date)
+                .Select(g => new DailyPriceDTO
+                {
+                    Date = g.Key,
+                    Price = g.Average(p => p.Price ?? 0),
+                    Note = g.FirstOrDefault().Note // Lấy Note của bản ghi đầu tiên trong nhóm
+                })
+                .OrderBy(d => d.Date)
+                .ToListAsync();
+
+            return dailyPrices;
+        }
+
+        public async Task<List<DailyPriceDTO>> GetDailyPricesForProductTypeAsync(int productTypeId)
+        {
+            var dailyPrices = await _context.ProductTypePrices
+                .Where(p => p.ProductTypeId == productTypeId)
+                .GroupBy(p => p.CreatedAt.Date)
+                .Select(g => new DailyPriceDTO
+                {
+                    Date = g.Key,
+                    Price = g.Average(p => p.Price ?? 0),
+                    Note = g.FirstOrDefault().Note // Lấy Note của bản ghi đầu tiên trong nhóm
+                })
+                .OrderBy(d => d.Date)
+                .ToListAsync();
+
+            return dailyPrices;
+        }
+
+
+
     }
 }
