@@ -304,6 +304,38 @@ namespace nns_backend.Repositories
             return dailyPrices;
         }
 
+        public async Task<List<Dictionary<string, object>>> GetDailyPricesForProductType2Async(int productTypeId)
+        {
+            // Lấy tất cả giá theo ngày và người dùng cho sản phẩm
+            var dailyPrices = await _context.ProductTypePrices
+                .Where(p => p.ProductTypeId == productTypeId)
+                .GroupBy(p => p.CreatedAt.Date)
+                .Select(g => new
+                {
+                    Date = g.Key,
+                    PricesByUser = g.Select(p => new
+                    {
+                        UserName = p.User.FullName, // Giả sử `User` có trường `FullName`
+                        Price = p.Price ?? 0
+                    }).ToDictionary(p => p.UserName, p => p.Price)
+                })
+                .OrderBy(d => d.Date)
+                .ToListAsync();
+
+            // Chuyển đổi sang định dạng `{ date, user1, user2, ... }`
+            var formattedPrices = dailyPrices.Select(d =>
+            {
+                var priceEntry = new Dictionary<string, object> { { "date", d.Date } };
+                foreach (var userPrice in d.PricesByUser)
+                {
+                    priceEntry[userPrice.Key] = userPrice.Value;
+                }
+                return priceEntry;
+            }).ToList();
+
+            return formattedPrices;
+        }
+
 
 
     }

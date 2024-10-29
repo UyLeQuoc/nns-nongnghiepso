@@ -14,5 +14,6 @@ namespace nns_backend.Interfaces
         Task<List<AgriculturalProductWithPriceDTO>> GetAllAgriculturalProductsWithPrices(DateTime targetDate);
         Task<List<DailyPriceDTO>> GetDailyPricesForUserProductTypeAsync(int userId, int productTypeId);
         Task<List<DailyPriceDTO>> GetDailyPricesForProductTypeAsync(int productTypeId);
+        Task<List<Dictionary<string, object>>> GetDailyPricesForProductType2Async(int productTypeId);
     }
 }
