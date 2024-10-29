@@ -15,14 +15,6 @@ export interface ProductType {
   name: string;
   description: string;
   agriculturalProductId: number;
-  createdAt: string;
-  updatedAt: string;
-  dailyPrices?: DailyPrice[] | [];
-  priceDifference?: number;
-  yesterdayPrice?: number;
-  agentProductPreference?: any;
-  productType?: ProductType;
-  todayPrice?: number;
 }
 
 export interface DailyPrice {
@@ -54,7 +46,6 @@ const agriculturalProductApi = {
   },
   getUserById: async (id: number): Promise<UserInfo> => {
     const response = await axiosClient.get<UserInfo>(`/api/User/${id}`);
-    console.log(response.data);
     return response.data;
   },
   create: async (data: Omit<AgriculturalProduct, 'id'>): Promise<AgriculturalProduct> => {
@@ -78,15 +69,10 @@ const agriculturalProductApi = {
     return response.data;
   },
 
-  getDailyPricesForProductType: async (productTypeId: number): Promise<PriceData[]> => {
-    const response = await axiosClient.get<PriceData[]>(`/api/AgentProductPreference/product/${productTypeId}/daily-prices`);
+  getDailyPricesForProductType: async (productTypeId: number): Promise<any[]> => {
+    const response = await axiosClient.get<any[]>(`/api/AgentProductPreference/product/${productTypeId}/daily-prices`);
     return response.data;
   }
 };
-
-interface PriceData {
-  date: string
-  [user: string]: number | string // Giá trị là số cho mỗi người dùng, hoặc là chuỗi cho `date`
-}
 
 export default agriculturalProductApi;

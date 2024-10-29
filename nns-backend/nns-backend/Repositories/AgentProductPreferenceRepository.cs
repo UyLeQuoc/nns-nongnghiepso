@@ -59,6 +59,9 @@ namespace nns_backend.Repositories
                     _context.ProductTypePrices.Add(productTypePrice);
                 }
 
+                //Update random price -+ 5000 VND
+                preference.TodayPrice = preference.TodayPrice + new Random().Next(-5000, 5000);
+
                 // No reset for TodayPrice as requested
                 _context.AgentProductPreferences.Update(preference);
             }

@@ -5,6 +5,8 @@ import NavBar from '@/components/nav-bar'
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { Calendar, ChevronDown, ChevronUp, DollarSign } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { useRouter } from 'next/navigation'
 
 interface Price {
   userId: number;
@@ -39,6 +41,7 @@ export default function Page() {
   const [products, setProducts] = useState<Product[]>([])
   const [expandedProducts, setExpandedProducts] = useState<number[]>([])
   const [expandedTypes, setExpandedTypes] = useState<{ [key: number]: number[] }>({})
+  const router = useRouter()
 
   useEffect(() => {
     fetch('https://nns-api.uydev.id.vn/api/AgentProductPreference/products-with-prices')
@@ -149,6 +152,11 @@ export default function Page() {
                               </div>
                             ))}
                           </div>
+                          {/* button xem lich su gia*/}
+                          <Button
+                            className="mt-4"
+                            onClick={() =>router.push(`/gia-ca/${type.id}`)}
+                          >Xem lịch sử giá</Button>
                         </div>
                       )}
                     </div>
