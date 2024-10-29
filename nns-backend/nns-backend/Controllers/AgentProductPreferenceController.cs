@@ -171,7 +171,7 @@ namespace nns_backend.Controllers
         {
             try
             {
-                var dailyPrices = await _repository.GetDailyPricesForProductTypeAsync(productTypeId);
+                var dailyPrices = await _repository.GetDailyPricesForProductType2Async(productTypeId);
                 if (dailyPrices == null || dailyPrices.Count == 0)
                 {
                     return NotFound("No daily prices found for the specified product type.");
