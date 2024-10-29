@@ -287,42 +287,26 @@ namespace nns_backend.Repositories
             return dailyPrices;
         }
 
-        public async Task<List<DailyPriceDTO>> GetDailyPricesForProductTypeAsync(int productTypeId)
+        public async Task<List<Dictionary<string, object>>> GetDailyPricesForProductTypeAsync(int productTypeId)
         {
-            var dailyPrices = await _context.ProductTypePrices
+            // Lấy dữ liệu từ database và chuyển sang client-side bằng AsEnumerable()
+            var dailyPrices = _context.ProductTypePrices
                 .Where(p => p.ProductTypeId == productTypeId)
-                .GroupBy(p => p.CreatedAt.Date)
-                .Select(g => new DailyPriceDTO
-                {
-                    Date = g.Key,
-                    Price = g.Average(p => p.Price ?? 0),
-                    Note = g.FirstOrDefault().Note // Lấy Note của bản ghi đầu tiên trong nhóm
-                })
-                .OrderBy(d => d.Date)
-                .ToListAsync();
-
-            return dailyPrices;
-        }
-
-        public async Task<List<Dictionary<string, object>>> GetDailyPricesForProductType2Async(int productTypeId)
-        {
-            // Lấy tất cả giá theo ngày và người dùng cho sản phẩm
-            var dailyPrices = await _context.ProductTypePrices
-                .Where(p => p.ProductTypeId == productTypeId)
+                .Include(p => p.User) // Đảm bảo Include User để có thể truy cập UserName
+                .AsEnumerable() // Chuyển sang client-side để xử lý phần không thể dịch sang SQL
                 .GroupBy(p => p.CreatedAt.Date)
                 .Select(g => new
                 {
                     Date = g.Key,
-                    PricesByUser = g.Select(p => new
-                    {
-                        UserName = p.User.FullName, // Giả sử `User` có trường `FullName`
-                        Price = p.Price ?? 0
-                    }).ToDictionary(p => p.UserName, p => p.Price)
+                    PricesByUser = g.ToDictionary(
+                        p => p.User.FullName, // Sử dụng UserName trên client-side
+                        p => p.Price ?? 0
+                    )
                 })
                 .OrderBy(d => d.Date)
-                .ToListAsync();
+                .ToList(); // Sử dụng ToList() thay vì ToListAsync()
 
-            // Chuyển đổi sang định dạng `{ date, user1, user2, ... }`
+            // Chuyển đổi dữ liệu thành định dạng `{ date, user1, user2, ... }`
             var formattedPrices = dailyPrices.Select(d =>
             {
                 var priceEntry = new Dictionary<string, object> { { "date", d.Date } };

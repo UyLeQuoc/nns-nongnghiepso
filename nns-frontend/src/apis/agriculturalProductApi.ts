@@ -78,10 +78,15 @@ const agriculturalProductApi = {
     return response.data;
   },
 
-  getDailyPricesForProductType: async (productTypeId: number): Promise<DailyPrice[]> => {
-    const response = await axiosClient.get<DailyPrice[]>(`/api/AgentProductPreference/product/${productTypeId}/daily-prices`);
+  getDailyPricesForProductType: async (productTypeId: number): Promise<PriceData[]> => {
+    const response = await axiosClient.get<PriceData[]>(`/api/AgentProductPreference/product/${productTypeId}/daily-prices`);
     return response.data;
   }
 };
+
+interface PriceData {
+  date: string
+  [user: string]: number | string // Giá trị là số cho mỗi người dùng, hoặc là chuỗi cho `date`
+}
 
 export default agriculturalProductApi;
