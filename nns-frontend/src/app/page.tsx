@@ -41,15 +41,15 @@ export default function Home() {
               <div className="flex justify-center gap-4">
                 <Button
                   className="bg-[#FAFE44] text-[#0F4026] hover:bg-[#FAFE44] hover:opacity-60 px-6 py-3"
-                  onClick={() => router.push("/gia-ca")}
+                  onClick={() => router.push("/chat")}
                 >
-                  Xem Giá Nông Sản
+                  Chat với AI
                 </Button>
                 <Button
                   className="bg-transparent border-2 border-[#DCFFD7] text-[#DCFFD7] hover:bg-[#DCFFD7] hover:text-[#0F4026] px-6 py-3"
-                  onClick={() => router.push("/register")}
+                  onClick={() => router.push("/gia-ca")}
                 >
-                  Đăng Ký Đại Lý
+                  Xem Giá Nông Sản
                 </Button>
               </div>
             </div>

@@ -15,6 +15,7 @@ namespace nns_backend
         public DbSet<AgentProductPreference> AgentProductPreferences { get; set; }
         public DbSet<ProductTypePrice> ProductTypePrices { get; set; }
         public DbSet<FarmTool> FarmTools { get; set; }
+        public DbSet<Chat> Chats { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

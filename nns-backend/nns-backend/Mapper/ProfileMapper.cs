@@ -16,6 +16,13 @@ namespace nns_backend.Mapper
             CreateMap<BlogUpdateDTO, Blog>()
                 .ReverseMap();
 
+            CreateMap<Chat, ChatResponseDTO>()
+                .ReverseMap();
+            CreateMap<ChatCreateDTO, Chat>()
+                .ReverseMap();
+            CreateMap<ChatUpdateDTO, Chat>()
+                .ReverseMap();
+
             CreateMap<AgriculturalProduct, AgriculturalProductResponseDTO>()
                 .ReverseMap();
             CreateMap<AgriculturalProductCreateDTO, AgriculturalProduct>()

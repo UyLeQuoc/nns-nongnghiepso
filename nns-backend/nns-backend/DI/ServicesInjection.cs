@@ -38,6 +38,7 @@ namespace nns_backend.DI
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IAgentProductPreferenceRepository, AgentProductPreferenceRepository>();
             services.AddScoped<IFarmToolRepository, FarmToolRepository>();
+            services.AddScoped<IChatRepository, ChatRepository>();
 
             // add signInManager
             services.AddScoped<SignInManager<User>>();
