@@ -241,7 +241,7 @@ export default function AIChatPage() {
       </div>
 
       
-      <div className="flex flex-wrap justify-center space-x-4">
+      <div className="flex flex-wrap justify-center space-x-4 space-y-1">
         {faqQuestions.map((question, index) => (
           <button
             key={index}
