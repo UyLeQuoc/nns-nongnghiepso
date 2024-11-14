@@ -8,7 +8,8 @@ import { useRouter } from "next/navigation";
 import { OpenAI } from "openai";
 import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
 import { motion } from "framer-motion";
-
+import ReactMarkdown from "react-markdown";
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"; // Update this import path as needed
 interface Question {
   id: number;
   question: string;
@@ -127,11 +128,22 @@ export default function AIChatPage() {
       // Construct the message for the AI
       const initialMessages: ChatCompletionMessageParam[] = [
         {
-          role: "system",
-          content: `You are an agriculture AI. Answer questions clearly and briefly in markdown format with lists, bold text for key details, and structured information. ${
-            moreInformation ? "Include relevant data insights from the provided API data below." : ""
-          }`
-        },
+            role: "system",
+            content: `You are an agriculture AI. Respond clearly and use markdown for formatting. Follow these guidelines:
+    - **Bold** text for key terms or important values.
+    - *Italic* text for emphasis or secondary information.
+    - Use bullet points or numbered lists for lists.
+    - For tables, format them with proper headers and rows as follows:
+    
+    | Header 1 | Header 2 |
+    | -------- | -------- |
+    | Row 1    | Value 1  |
+    | Row 2    | Value 2  |
+    
+    Return all responses in markdown format so they render properly in a markdown viewer. ${
+              moreInformation ? "Include relevant data insights based on the provided API data below." : ""
+            }`
+          },
         {
           role: "user",
           content: faq?.sendAI
@@ -169,111 +181,122 @@ export default function AIChatPage() {
       <div className="container mx-auto">
         <NavBar />
         <main className="container mx-auto py-12 px-2">
-          <section className="mb-12">
-            <div className="text-center py-28 px-4">
-              <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-                Chat với AI
-              </h1>
-              <div className="flex flex-col items-center justify-center space-y-4">
-                <div className="w-full max-w-lg relative">
-                  <input
-                    type="text"
-                    placeholder="Message ChatGPT"
-                    value={inputValue}
-                    onChange={handleInputChange}
-                    className="w-full p-4 rounded-full bg-white border border-gray-300 text-gray-800 placeholder-gray-500 focus:outline-none"
-                  />
-                  <button onClick={handleQuestionSubmit} className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500">
-                    {submitLoading ? (
-                      <div className="loader">
-                        Loading...
-                      </div>
-                    ) : (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-6 w-6"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M5 12h14M12 5l7 7-7 7"
-                        />
-                      </svg>
-                    )}
-                  </button>
-                  {error && <p className="text-red-500 mt-2">{error}</p>}
-                  {suggestions.length > 0 && (
-                    <div className="absolute left-0 right-0 mt-2 bg-white border border-gray-300 rounded-lg shadow-lg max-h-48 overflow-y-auto">
-                      {suggestions.map((suggestion, index) => (
-                        <div
-                          key={index}
-                          onClick={() => handleSuggestionClick(suggestion)}
-                          className="p-4 hover:bg-gray-100 cursor-pointer"
-                        >
-                          {suggestion}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-                {responseText && (
-                  <div className="mt-4 bg-gray-100 p-4 rounded-lg shadow-lg w-full max-w-lg">
-                    {responseText.split(" ").map((word, index) => (
-                      <motion.span
-                        key={index}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.05 }}
-                        className="inline-block mr-1"
-                      >
-                        {word}
-                      </motion.span>
-                    ))}
-                  </div>
-                )}
-                <div className="flex flex-wrap justify-center space-x-4">
-                  {faqQuestions.map((question, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setInputValue(question.question)}
-                      className="flex items-center px-4 py-2 rounded-full bg-green-100 text-green-800 border border-green-300"
-                    >
-                      {question.question}
-                    </button>
-                  ))}
-                </div>
+        <section className="mb-12">
+  <div className="text-center py-10 pb-2 px-4">
+    <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
+      Chat với AI
+    </h1>
+    <div className="flex flex-col items-center justify-center space-y-4">
+      <div className="w-full max-w-lg relative">
+        <input
+          type="text"
+          placeholder="Message ChatGPT"
+          value={inputValue}
+          onChange={handleInputChange}
+          className="w-full p-4 rounded-full bg-white border border-gray-300 text-gray-800 placeholder-gray-500 focus:outline-none"
+        />
+        <button onClick={handleQuestionSubmit} className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500"
+         disabled={submitLoading}
+        >
+          {submitLoading ? (
+            <div className="loader">Loading...</div>
+          ) : (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M5 12h14M12 5l7 7-7 7"
+              />
+            </svg>
+          )}
+        </button>
+        {error && <p className="text-red-500 mt-2">{error}</p>}
+        {suggestions.length > 0 && (
+          <div className="absolute left-0 right-0 mt-2 bg-white border border-gray-300 rounded-lg shadow-lg max-h-48 overflow-y-auto">
+            {suggestions.map((suggestion, index) => (
+              <div
+                key={index}
+                onClick={() => handleSuggestionClick(suggestion)}
+                className="p-4 hover:bg-gray-100 cursor-pointer"
+              >
+                {suggestion}
               </div>
-            </div>
-          </section>
-          <div>
-            <h1 className="text-2xl font-bold text-white mb-6">
-              Những câu hỏi từ nông dân khác
-            </h1>
-            <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-              {loading ? (
-                Array.from({ length: 5 }).map((_, index) => (
-                  <div key={index} className="p-4 border border-gray-300 rounded-lg animate-pulse">
+            ))}
+          </div>
+        )}
+      </div>
+
+      
+      <div className="flex flex-wrap justify-center space-x-4">
+        {faqQuestions.map((question, index) => (
+          <button
+            key={index}
+            onClick={() => setInputValue(question.question)}
+            className="flex items-center px-4 py-2 rounded-full bg-green-100 text-green-800 border border-green-300"
+          >
+            {question.question}
+          </button>
+        ))}
+      </div>
+      {responseText && (
+        <motion.div
+          className="mt-4 bg-gray-100 p-4 rounded-lg shadow-lg w-full text-left"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+        >
+          <ReactMarkdown>{responseText}</ReactMarkdown>
+        </motion.div>
+      )}
+
+    </div>
+  </div>
+</section>
+
+<div>
+    <h1 className="text-2xl font-bold text-white mb-6">
+        Những câu hỏi từ nông dân khác
+    </h1>
+    <div className="">
+        {loading ? (
+            Array.from({ length: 5 }).map((_, index) => (
+                <div key={index} className="p-4 border border-gray-300 rounded-lg animate-pulse">
                     <div className="h-6 bg-gray-300 rounded mb-2 w-3/4"></div>
                     <div className="h-4 bg-gray-300 rounded w-1/2"></div>
-                  </div>
-                ))
-              ) : (
-                questions.map((question) => (
-                  <div key={question.id} className="p-4 border border-gray-300 bg-white rounded-lg">
-                    <h2 className="text-lg font-semibold text-gray-800">{question.question}</h2>
-                    <p className="text-gray-600">{question.answer || "Đang chờ trả lời..."}</p>
-                    <span className="text-sm text-gray-500">
-                      {new Date(question.createdAt).toLocaleString()}
-                    </span>
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
+                </div>
+            ))
+        ) : (
+            <Accordion type="single" collapsible className="grid gap-2 grid-cols-1 md:grid-cols-2"> {/* Add Accordion wrapper here */}
+                {questions.map((question) => (
+                    <AccordionItem key={question.id} value={`question-${question.id}`} className="border border-gray-300 rounded-lg mb-2 bg-white">
+                        <AccordionTrigger className="p-4 font-semibold text-gray-800 text-xl">
+                            <div className="flex flex-col text-left">
+                                <h2>{question.question}</h2>
+                                <span className="text-sm text-gray-500 block mt-2">
+                                    {new Date(question.createdAt).toLocaleString()}
+                                </span>
+                            </div>
+                        </AccordionTrigger>
+                        <AccordionContent className="p-4 text-gray-600">
+                            <ReactMarkdown>
+                                {question.answer || "Đang chờ trả lời..."}
+                            </ReactMarkdown>
+                            
+                        </AccordionContent>
+                    </AccordionItem>
+                ))}
+            </Accordion>
+        )}
+    </div>
+</div>
+
         </main>
       </div>
     </div>
