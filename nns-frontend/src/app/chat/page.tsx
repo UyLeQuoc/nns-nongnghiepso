@@ -1,27 +1,21 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
 import axiosClient from "@/apis/axiosClient";
 import BackgroundAnimation from "@/components/background-animation";
 import NavBar from "@/components/nav-bar";
-import { useRouter } from "next/navigation";
-import { OpenAI } from "openai";
-import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"; // Update this import path as needed
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
+import React, { useEffect, useState } from "react";
+import remarkGfm from 'remark-gfm';
 import ReactMarkdown from "react-markdown";
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"; // Update this import path as needed
 interface Question {
   id: number;
   question: string;
   answer: string | null;
   createdAt: string;
 }
-
-const openai = new OpenAI({
-  project: process.env.NEXT_PUBLIC_OPENAI_PROJECT_ID,
-  apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
-  dangerouslyAllowBrowser: true,
-});
 
 export default function AIChatPage() {
   const router = useRouter();
@@ -152,22 +146,33 @@ export default function AIChatPage() {
         }
       ];
 
-      const response = await openai.chat.completions.create({
-        model: "gpt-4o-mini",
-        messages: initialMessages
-      });
+      try {
+        const res = await fetch("/api/openai", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ initialMessages }),  // Sending initialMessages array
+        });
+  
+        const data = await res.json();
+        const answer = data.choices[0].message?.content || "Không có phản hồi từ NNS AI.";
+        console.log("OpenAI Response:", answer);
+  
+        await axiosClient.post("https://nns-api.uydev.id.vn/Chat", {
+          question: inputValue,
+          answer: answer
+        });
+  
+        setResponseText(answer);
+        setInputValue("");
+        fetchQuestions();
+      } catch (error) {
+        console.error("Failed to fetch response:", error);
+      } finally {
+        setLoading(false);
+      }
 
-      const answer = response.choices[0].message?.content || "Không có phản hồi từ NNS AI.";
-      console.log("OpenAI Response:", answer);
 
-      await axiosClient.post("https://nns-api.uydev.id.vn/Chat", {
-        question: inputValue,
-        answer: answer
-      });
-
-      setResponseText(answer);
-      setInputValue("");
-      fetchQuestions();
+     
     } catch (error) {
       console.error("Error in handling question submission:", error);
     } finally {
@@ -252,7 +257,7 @@ export default function AIChatPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
         >
-          <ReactMarkdown>{responseText}</ReactMarkdown>
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>{responseText}</ReactMarkdown>
         </motion.div>
       )}
 
@@ -285,7 +290,7 @@ export default function AIChatPage() {
                             </div>
                         </AccordionTrigger>
                         <AccordionContent className="p-4 text-gray-600">
-                            <ReactMarkdown>
+                            <ReactMarkdown remarkPlugins={[remarkGfm]}>
                                 {question.answer || "Đang chờ trả lời..."}
                             </ReactMarkdown>
                             
