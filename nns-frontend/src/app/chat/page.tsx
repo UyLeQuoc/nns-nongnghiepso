@@ -4,12 +4,13 @@ import axiosClient from "@/apis/axiosClient";
 import BackgroundAnimation from "@/components/background-animation";
 import NavBar from "@/components/nav-bar";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"; // Update this import path as needed
+import axios from "axios";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
 import React, { useEffect, useState } from "react";
-import remarkGfm from 'remark-gfm';
 import ReactMarkdown from "react-markdown";
+import remarkGfm from 'remark-gfm';
 interface Question {
   id: number;
   question: string;
@@ -38,24 +39,25 @@ export default function AIChatPage() {
       question: "Giá cà phê tươi hôm nay?",
       answer: "Giá cà phê tươi hôm nay dao động từ 109,430 đến 215,222 VND/kg.",
       callApi: "https://nns-api.uydev.id.vn/api/AgentProductPreference/products-with-prices",
-      sendAI: "Hãy dựa vào dữ liệu API để trả lời rõ ràng và ngắn gọn về 'Giá cà phê tươi hôm nay'. Trích xuất dữ liệu như khoảng giá và bất kỳ thông tin hữu ích nào có sẵn."
+      sendAI: "Hãy dựa vào dữ liệu API để trả lời rõ ràng và ngắn gọn về 'Giá cà phê tươi hôm nay'. Trích xuất dữ liệu như khoảng giá và bất kỳ thông tin hữu ích nào có sẵn. Ghi nguồn từ Nông Nghiệp Số"
     },
     {
       question: "Giá phân bón?",
-      answer: "Giá phân bón dao động từ 100,000 đến 200,000 VND/kg.",
-      sendAI: "Hãy cung cấp giá trị phân bón random trong khoảng 100,000 đến 200,000 VND"
+      answer: "Giá phân bón",
+      callApi: "https://giacaphe.com/gia-phan-bon/",
+      sendAI: "Dựa vào dữ liệu API, trả lời câu hỏi về lịch sử giá phân bón tươi trong tuần qua. Trình bày dữ liệu dưới dạng bảng hoặc danh sách với các mốc giá để người dùng dễ hiểu.  Ghi nguồn từ giacaphe.com"
     },
     {
       question: "Lịch sử giá cả?",
       answer: "Lịch sử giá cả của cà phê tươi trong 1 tuần qua.",
       callApi: "https://nns-api.uydev.id.vn/api/AgentProductPreference/product/4/daily-prices",
-      sendAI: "Dựa vào dữ liệu API, trả lời câu hỏi về lịch sử giá cà phê tươi trong tuần qua. Trình bày dữ liệu dưới dạng bảng hoặc danh sách với các mốc giá theo từng ngày để người dùng dễ hiểu."
+      sendAI: "Dựa vào dữ liệu API, trả lời câu hỏi về lịch sử giá cà phê tươi trong tuần qua. Trình bày dữ liệu dưới dạng bảng hoặc danh sách với các mốc giá theo từng ngày để người dùng dễ hiểu. Ghi nguồn từ Nông Nghiệp Số"
     },
     {
       question: "Giá cà phê các loại hôm nay?",
       answer: "Giá cà phê các loại hôm nay dao động từ 109,430 đến 215,222 VND/kg.",
       callApi: "https://nns-api.uydev.id.vn/api/AgentProductPreference/products-with-prices",
-      sendAI: "Trả lời câu hỏi về 'Giá cà phê các loại hôm nay' dựa trên dữ liệu API. Bao gồm thông tin về các loại cà phê (như Arabica, Robusta) với giá cụ thể cho từng loại nếu có."
+      sendAI: "Trả lời câu hỏi về 'Giá cà phê các loại hôm nay' dựa trên dữ liệu API. Bao gồm thông tin về các loại cà phê (như Arabica, Robusta) với giá cụ thể cho từng loại nếu có. Ghi nguồn từ Nông Nghiệp Số"
     }
   ];
 
@@ -77,7 +79,7 @@ export default function AIChatPage() {
 
   const fetchMoreInformation = async (apiUrl: string) => {
     try {
-      const response = await axiosClient.get(apiUrl);
+      const response = await axios.get(apiUrl);
       setMoreInformation(JSON.stringify(response.data));
     } catch (error) {
       console.error("Failed to fetch additional information", error);
