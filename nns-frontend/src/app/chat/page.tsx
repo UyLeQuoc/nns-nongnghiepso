@@ -45,7 +45,7 @@ export default function AIChatPage() {
       question: "Giá phân bón?",
       answer: "Giá phân bón",
       callApi: "https://giacaphe.com/gia-phan-bon/",
-      sendAI: "Dựa vào dữ liệu API, trả lời câu hỏi về lịch sử giá phân bón tươi trong tuần qua. Trình bày dữ liệu dưới dạng bảng hoặc danh sách với các mốc giá để người dùng dễ hiểu.  Ghi nguồn từ giacaphe.com"
+      sendAI: "Dựa vào dữ liệu API, trả lời câu hỏi về các theo giá từng loại phân bón trong ngày(theo VND/Kg). Trình bày dữ liệu dưới dạng bảng hoặc danh sách   Ghi nguồn từ giacaphe.com"
     },
     {
       question: "Lịch sử giá cả?",
@@ -197,7 +197,7 @@ export default function AIChatPage() {
       <div className="w-full max-w-lg relative">
         <input
           type="text"
-          placeholder="Message ChatGPT"
+          placeholder="Hỏi nông nghiêp số AI..."
           value={inputValue}
           onChange={handleInputChange}
           className="w-full p-4 rounded-full bg-white border border-gray-300 text-gray-800 placeholder-gray-500 focus:outline-none"
