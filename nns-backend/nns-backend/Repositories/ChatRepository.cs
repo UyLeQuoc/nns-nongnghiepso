@@ -15,8 +15,10 @@ namespace nns_backend.Repositories
 
         public async Task<List<Chat>> GetChatsAsync()
         {
+            //get 20 newest chats
             return await _context.Chats
                 .OrderByDescending(x => x.CreatedAt)
+                .Take(20)
                 .ToListAsync();
         }
 
