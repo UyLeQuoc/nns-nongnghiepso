@@ -49,9 +49,15 @@ export default function AIChatPage() {
     },
     {
       question: "Lịch sử giá cả của các đại lý?",
-      answer: "Lịch sử giá cả của cà phê của các đại lý",
+      answer: "Lịch sử giá cả của cà phê của các đại lý. Nếu hỏi về 1 đại lý cụ thể, hãy cung cấp thông tin chi tiết về giá cả của họ trong tuần qua.",
       callApi: "https://nns-api.uydev.id.vn/api/AgentProductPreference/product/4/daily-prices",
-      sendAI: "Dựa vào dữ liệu API, trả lời câu hỏi về lịch sử giá cà phê tươi trong tuần qua của các đại lý. Trình bày dữ liệu dưới dạng bảng hoặc danh sách với các mốc giá theo từng ngày để người dùng dễ hiểu. Ghi nguồn từ Nông Nghiệp Số"
+      sendAI: "Dựa vào dữ liệu API, trả lời câu hỏi về lịch sử giá cà phê tươi trong tuần qua của các đại lý. Nếu hỏi về 1 đại lý cụ thể, hãy cung cấp thông tin chi tiết về giá cả của họ trong tuần qua. Trình bày dữ liệu dưới dạng bảng hoặc danh sách với các mốc giá theo từng ngày để người dùng dễ hiểu. Ghi nguồn từ Nông Nghiệp Số"
+    },
+    {
+      question: "Giá cả của 1 đại lý giá tốt?",
+      answer: "Lịch sử giá cả của cà phê của 1 đại lý. Nếu hỏi về 1 đại lý cụ thể, hãy cung cấp thông tin chi tiết về giá cả của họ trong tuần qua.",
+      callApi: "https://nns-api.uydev.id.vn/api/AgentProductPreference/product/4/daily-prices",
+      sendAI: "Dựa vào dữ liệu API, trả lời câu hỏi về lịch sử giá cà phê tươi trong tuần qua của các đại lý. Nếu hỏi về 1 đại lý cụ thể, hãy kiếm 1 người giá ổn và đẹp cung cấp thông tin chi tiết về giá cả của họ trong tuần qua. Trình bày dữ liệu dưới dạng bảng hoặc danh sách với các mốc giá theo từng ngày để người dùng dễ hiểu. Ghi nguồn từ Nông Nghiệp Số"
     },
     {
       question: "Giá cà phê các loại hôm nay?",
