@@ -48,10 +48,10 @@ export default function AIChatPage() {
       sendAI: "Dựa vào dữ liệu API, trả lời câu hỏi về các theo giá từng loại phân bón trong ngày(theo VND/Kg). Trình bày dữ liệu dưới dạng bảng hoặc danh sách   Ghi nguồn từ giacaphe.com"
     },
     {
-      question: "Lịch sử giá cả?",
-      answer: "Lịch sử giá cả của cà phê tươi trong 1 tuần qua.",
+      question: "Lịch sử giá cả của các đại lý?",
+      answer: "Lịch sử giá cả của cà phê của các đại lý",
       callApi: "https://nns-api.uydev.id.vn/api/AgentProductPreference/product/4/daily-prices",
-      sendAI: "Dựa vào dữ liệu API, trả lời câu hỏi về lịch sử giá cà phê tươi trong tuần qua. Trình bày dữ liệu dưới dạng bảng hoặc danh sách với các mốc giá theo từng ngày để người dùng dễ hiểu. Ghi nguồn từ Nông Nghiệp Số"
+      sendAI: "Dựa vào dữ liệu API, trả lời câu hỏi về lịch sử giá cà phê tươi trong tuần qua của các đại lý. Trình bày dữ liệu dưới dạng bảng hoặc danh sách với các mốc giá theo từng ngày để người dùng dễ hiểu. Ghi nguồn từ Nông Nghiệp Số"
     },
     {
       question: "Giá cà phê các loại hôm nay?",
