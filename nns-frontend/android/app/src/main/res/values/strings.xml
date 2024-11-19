@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">nns-frontend</string>
+    <string name="title_activity_main">nns-frontend</string>
+    <string name="package_name">nns.frontend.app</string>
+    <string name="custom_url_scheme">nns.frontend.app</string>
+</resources>
