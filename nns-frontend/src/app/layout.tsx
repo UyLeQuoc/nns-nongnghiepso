@@ -4,6 +4,7 @@ import "./globals.css";
 import "./style.css";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/toaster";
+import BottomNav from "@/components/bottom-nav-bar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,6 +22,7 @@ export default function RootLayout({
     <html lang="en">
       <TooltipProvider>
         <body className={inter.className}>{children}</body>
+        <BottomNav />
       </TooltipProvider>
     </html>
   );

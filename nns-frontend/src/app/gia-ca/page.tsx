@@ -7,6 +7,7 @@ import Image from 'next/image'
 import { Calendar, ChevronDown, ChevronUp, DollarSign } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 interface Price {
   userId: number;
@@ -131,25 +132,31 @@ export default function Page() {
                           <p className="text-sm text-gray-600 mb-3">{type.description}</p>
                           <div className="space-y-2">
                             {type.prices.map((price, index) => (
-                              <div key={index} className="flex justify-between items-center text-sm bg-green-50 p-2 rounded-md">
-                                <div className="flex items-center space-x-2 flex-1">
-                                  <Image
-                                    src={price.user.imageUrl}
-                                    alt={price.user.fullName}
-                                    width={24}
-                                    height={24}
-                                    className="rounded-full aspect-square object-cover"
-                                  />
-                                  <span className="text-gray-700 hover:underline cursor-pointer">{price.user.fullName}</span>
-                                </div>
-                                <span className="text-gray-600 flex items-center mr-2 md:mr-10">
+                              <div key={index} className="flex flex-col sm:flex-row justify-between items-start sm:items-center text-sm bg-green-50 p-3 rounded-md space-y-2 sm:space-y-0">
+                              <div className="flex items-center space-x-2 w-full sm:w-auto">
+                                <Image
+                                  src={price.user.imageUrl}
+                                  alt={""}
+                                  width={24}
+                                  height={24}
+                                  className="rounded-full aspect-square object-cover"
+                                />
+                               <Link href={`/dai-ly/${price.userId}`}>
+                                <span className="text-gray-700 hover:underline cursor-pointer truncate max-w-[150px]">
+                                    {price.user.fullName}
+                                  </span>
+                                </Link>
+                              </div>
+                              <div className="flex justify-between items-center w-full sm:w-auto">
+                                <span className="text-gray-600 items-center flex sm:mr-4">
                                   <Calendar className="w-4 h-4 mr-1 text-green-600" />
-                                  {price.note}
+                                  <span className="truncate max-w-[120px]">{price.note}</span>
                                 </span>
                                 <span className="text-green-700 font-medium flex items-center">
                                   {formatPrice(price.price)}
                                 </span>
                               </div>
+                            </div>
                             ))}
                           </div>
                           {/* button xem lich su gia*/}

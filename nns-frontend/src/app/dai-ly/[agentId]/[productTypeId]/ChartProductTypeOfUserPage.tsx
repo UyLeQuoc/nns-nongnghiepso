@@ -116,43 +116,42 @@ export default function ChartProductTypeOfUserPage({
 }
 
 function UserInfoCard({ userInfo }: { userInfo: UserInfo | null }) {
-  if (!userInfo) return null;
+  if (!userInfo) return null
 
   return (
-    <Card className="mb-8 overflow-hidden">
-      <div className="flex-shrink-0 h-52 relative">
+    <Card>
+      <div className="flex-shrink-0 h-40 sm:h-52 relative">
         <Image
           src={userInfo.thumbnailUrl}
           alt={userInfo.fullName}
-          width={500}
-          height={500}
-          className="w-full h-full object-cover rounded-t-md"
+          layout="fill"
+          objectFit="cover"
+          className="rounded-t-md"
         />
-        <div className="absolute bottom-0 left-8 -mb-28 flex gap-4">
+        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent h-1/2" />
+      </div>
+      <CardContent className="relative pt-4 sm:pt-0">
+        <div className="flex flex-col sm:flex-row items-center sm:items-end sm:space-x-4 -mt-20 sm:-mt-1">
           <Image
             src={userInfo.imageUrl}
             alt={userInfo.fullName}
-            width={170}
-            height={170}
-            className="rounded-full aspect-square object-cover border-[5px] border-white"
+            width={120}
+            height={120}
+            className="rounded-full object-cover border-4 border-white aspect-square"
           />
-          <div className="self-end py-3">
-            <h2 className="text-3xl font-bold mb-2">{userInfo.fullName}</h2>
+          <div className="text-center sm:text-left mt-4 sm:mt-0">
+            <h2 className="text-2xl sm:text-3xl font-bold mb-2">{userInfo.fullName}</h2>
             <p className="text-gray-500">Số điện thoại: {userInfo.phoneNumber}</p>
             <p className="text-gray-500">Email: {userInfo.email}</p>
           </div>
         </div>
-      </div>
-      <CardContent className="flex items-center space-x-4 p-6">
-        <div className="flex flex-col mt-24 gap-1">
-          <h2 className="text-xl font-bold">Địa chỉ</h2>
+        <div className="mt-6">
+          <h3 className="text-xl font-bold mb-2">Địa chỉ</h3>
           <p className="text-gray-500">{userInfo.address}</p>
-          <h2 className="text-xl font-bold mt-2">Miêu tả đại lý</h2>
-          <p className="text-gray-500">{userInfo.description}</p>
         </div>
       </CardContent>
     </Card>
-  );
+  )
 }
 
 function ProductTypeCard({

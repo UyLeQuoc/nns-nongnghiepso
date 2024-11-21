@@ -1,55 +1,57 @@
-"use client";
+'use client'
 
-import { fetchPreferencesByUserId, fetchPriceDifferencesByUserId } from "@/apis/analystApi";
-import { getUserById } from "@/apis/userApi";
-import BackgroundAnimation from "@/components/background-animation";
-import NavBar from "@/components/nav-bar";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useToast } from "@/hooks/use-toast";
-import { format } from "date-fns";
-import { ArrowDown, ArrowUp } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"
+import Image from "next/image"
+import Link from "next/link"
+import { format } from "date-fns"
+import { ArrowDown, ArrowUp } from 'lucide-react'
+import { fetchPriceDifferencesByUserId } from "@/apis/analystApi"
+import BackgroundAnimation from "@/components/background-animation"
+import NavBar from "@/components/nav-bar"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Skeleton } from "@/components/ui/skeleton"
+import { useToast } from "@/hooks/use-toast"
+import { getUserById } from "@/apis/userApi"
 
 interface ProductType {
-  id: number;
-  name: string;
-  description: string;
+  id: number
+  name: string
+  description: string
 }
 
 interface AgentProductPreferenceResponseDTO {
-  userId: number;
-  productTypeId: number;
-  description: string;
-  todayPrice: number;
-  createdAt: string;
-  updatedAt: string;
-  productType: ProductType;
-  yesterdayPrice: number;
-  priceDifference: number;
-  agentProductPreference: any;
+  userId: number
+  productTypeId: number
+  description: string
+  todayPrice: number
+  createdAt: string
+  updatedAt: string
+  productType: ProductType
+  yesterdayPrice: number
+  priceDifference: number
+  agentProductPreference: {
+    updatedAt: string
+  }
 }
 
 interface UserInfo {
-  userId: number;
-  fullName: string;
-  email: string;
-  phoneNumber: string;
-  imageUrl: string;
-  thumbnailUrl: string;
-  address: string;
+  userId: number
+  fullName: string
+  email: string
+  phoneNumber: string
+  imageUrl: string
+  thumbnailUrl: string
+  address: string
 }
 
 function LoadingSkeleton() {
   return (
     <div className="container mx-auto p-4 space-y-6">
       <Card>
-        <CardContent className="flex items-center space-x-4 p-6">
+        <CardContent className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4 p-6">
           <Skeleton className="h-24 w-24 rounded-full" />
-          <div className="space-y-2">
+          <div className="space-y-2 text-center sm:text-left">
             <Skeleton className="h-4 w-[250px]" />
             <Skeleton className="h-4 w-[200px]" />
             <Skeleton className="h-4 w-[150px]" />
@@ -57,7 +59,7 @@ function LoadingSkeleton() {
         </CardContent>
       </Card>
       <Skeleton className="h-8 w-[300px]" />
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {[...Array(3)].map((_, i) => (
           <Card key={i}>
             <CardHeader>
@@ -72,14 +74,14 @@ function LoadingSkeleton() {
         ))}
       </div>
     </div>
-  );
+  )
 }
 
 export default function ClientAgentProductPreferences({ params }: { params: { agentId: string } }) {
-  const [userPreferences, setUserPreferences] = useState<AgentProductPreferenceResponseDTO[]>([]);
-  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
-  const [loading, setLoading] = useState(true);
-  const { toast } = useToast();
+  const [userPreferences, setUserPreferences] = useState<AgentProductPreferenceResponseDTO[]>([])
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null)
+  const [loading, setLoading] = useState(true)
+  const { toast } = useToast()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -87,35 +89,35 @@ export default function ClientAgentProductPreferences({ params }: { params: { ag
         const [preferences, user] = await Promise.all([
           fetchPriceDifferencesByUserId(+params.agentId),
           getUserById(+params.agentId),
-        ]);
-        setUserPreferences(preferences);
-        setUserInfo(user);
+        ])
+        setUserPreferences(preferences)
+        setUserInfo(user)
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching data:", error)
         toast({
           title: "Error",
           description: "Failed to fetch data. Please try again.",
           variant: "destructive",
-        });
+        })
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
+    }
 
-    fetchData();
-  }, [params.agentId, toast]);
+    fetchData()
+  }, [params.agentId, toast])
 
-  if (loading) return <LoadingSkeleton />;
+  if (loading) return <LoadingSkeleton />
 
   return (
     <div className="w-full overflow-x-hidden">
       <BackgroundAnimation />
       <div className="container mx-auto">
         <NavBar />
-        <main className="container mx-auto py-12 px-2 pt-6">
+        <main className="container mx-auto py-12 px-4 sm:px-6 lg:px-8">
           <UserInfoCard userInfo={userInfo} />
-          <h2 className="text-3xl font-bold text-[#DCFFD7] mb-6 mt-8">Nông sản kinh doanh</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#DCFFD7] mb-6 mt-8">Nông sản kinh doanh</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {userPreferences.map((pref) => (
               <PreferenceCard key={pref.productTypeId} preference={pref} agentId={params.agentId} />
             ))}
@@ -123,48 +125,51 @@ export default function ClientAgentProductPreferences({ params }: { params: { ag
         </main>
       </div>
     </div>
-  );
+  )
 }
 
 function UserInfoCard({ userInfo }: { userInfo: UserInfo | null }) {
-  if (!userInfo) return null;
+  if (!userInfo) return null
 
   return (
     <Card>
-      <div className="flex-shrink-0 h-52 relative">
+      <div className="flex-shrink-0 h-40 sm:h-52 relative">
         <Image
           src={userInfo.thumbnailUrl}
           alt={userInfo.fullName}
-          width={500}
-          height={500}
-          className="w-full h-full object-cover rounded-t-md"
+          layout="fill"
+          objectFit="cover"
+          className="rounded-t-md"
         />
-        <div className="absolute bottom-0 left-8 -mb-28 flex gap-4">
+        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent h-1/2" />
+      </div>
+      <CardContent className="relative pt-4 sm:pt-0">
+        <div className="flex flex-col sm:flex-row items-center sm:items-end sm:space-x-4 -mt-20 sm:-mt-1">
           <Image
             src={userInfo.imageUrl}
             alt={userInfo.fullName}
-            width={170}
-            height={170}
-            className="rounded-full object-cover border-[5px] border-white"
+            width={120}
+            height={120}
+            className="rounded-full object-cover border-4 border-white aspect-square"
           />
-          <div className="self-end py-3">
-            <h2 className="text-3xl font-bold mb-2">{userInfo.fullName}</h2>
+          <div className="text-center sm:text-left mt-4 sm:mt-0">
+            <h2 className="text-2xl sm:text-3xl font-bold mb-2">{userInfo.fullName}</h2>
             <p className="text-gray-500">Số điện thoại: {userInfo.phoneNumber}</p>
             <p className="text-gray-500">Email: {userInfo.email}</p>
           </div>
         </div>
-      </div>
-      <CardContent className="flex flex-col mt-24 gap-1">
-        <h2 className="text-xl font-bold">Địa chỉ</h2>
-        <p className="text-gray-500">{userInfo.address}</p>
+        <div className="mt-6">
+          <h3 className="text-xl font-bold mb-2">Địa chỉ</h3>
+          <p className="text-gray-500">{userInfo.address}</p>
+        </div>
       </CardContent>
     </Card>
-  );
+  )
 }
 
 function PreferenceCard({ preference, agentId }: { preference: AgentProductPreferenceResponseDTO; agentId: string }) {
-  const isPriceIncreased = preference.priceDifference > 0;
-  const isPriceDecreased = preference.priceDifference < 0;
+  const isPriceIncreased = preference.priceDifference > 0
+  const isPriceDecreased = preference.priceDifference < 0
 
   return (
     <Card>
@@ -194,19 +199,17 @@ function PreferenceCard({ preference, agentId }: { preference: AgentProductPrefe
               {preference.priceDifference >= 0 ? "+" : ""}
               {preference.priceDifference.toLocaleString()} VND
             </span>
-
-            
           </div>
-          <div className="mt-4 flex items-center justify-between">
-                <Link href={`/dai-ly/${agentId}/${preference.productTypeId}`}>
-                    <Button>Xem lịch sử giá</Button>
-                </Link>
-                <p className="text-xs text-gray-500">
-                    Cập nhật lần cuối: {format(new Date(preference?.agentProductPreference?.updatedAt), "dd/MM/yyyy HH:mm")}
-                </p>
-            </div>
+          <div className="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-2 sm:space-y-0">
+            <Link href={`/dai-ly/${agentId}/${preference.productTypeId}`}>
+              <Button>Xem lịch sử giá</Button>
+            </Link>
+            <p className="text-xs text-gray-500">
+              Cập nhật lần cuối: {format(new Date(preference?.agentProductPreference?.updatedAt), "dd/MM/yyyy HH:mm")}
+            </p>
+          </div>
         </div>
       </CardContent>
     </Card>
-  );
+  )
 }

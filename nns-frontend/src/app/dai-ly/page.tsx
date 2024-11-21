@@ -42,7 +42,11 @@ export default function UserDashboard() {
   useEffect(() => {
     fetch('https://nns-api.uydev.id.vn/api/User/all')
       .then(response => response.json())
-      .then(data => setUsers(data))
+      .then(data => {
+        // filter not email agent1@gmail.com and agent2@gmail.com
+        data = data.filter((user: User) => (user.email !== "agent1@gmail.com" && user.email !== "agent2@gmail.com"))
+        setUsers(data)
+      })
       .catch(error => console.error('Error fetching users:', error))
   }, [])
 
@@ -90,7 +94,11 @@ export default function UserDashboard() {
                         <TableRow key={prefIndex}>
                           <TableCell>{pref.productType.name}</TableCell>
                           <TableCell>{pref.description}</TableCell>
-                          <TableCell>{pref.todayPrice}</TableCell>
+                          {/* format vnd */}
+
+                          <TableCell>{
+                            new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(pref.todayPrice)
+                            }</TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
