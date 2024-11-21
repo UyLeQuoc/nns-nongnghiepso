@@ -8,6 +8,7 @@ import React, { useState } from "react"
 import { cn } from "@/lib/utils"
 import NavBar from "@/components/nav-bar"
 import BackgroundAnimation from "@/components/background-animation"
+import Link from "next/link"
 
 type PricingSwitchProps = {
   onSwitch: (value: string) => void
@@ -23,6 +24,7 @@ type PricingCardProps = {
   actionLabel: string
   popular?: boolean
   exclusive?: boolean
+  link?: string
 }
 
 const PricingHeader = ({ title, subtitle }: { title: string; subtitle: string }) => (
@@ -46,30 +48,61 @@ const PricingSwitch = ({ onSwitch }: PricingSwitchProps) => (
   </Tabs>
 )
 
-const PricingCard = ({ isYearly, title, monthlyPrice, yearlyPrice, description, features, actionLabel, popular, exclusive }: PricingCardProps) => (
+const PricingCard = ({
+  isYearly,
+  title,
+  monthlyPrice,
+  yearlyPrice,
+  description,
+  features,
+  actionLabel,
+  popular,
+  exclusive,
+  link
+}: PricingCardProps) => (
   <Card
-    className={cn(`w-72 flex flex-col justify-between py-1 ${popular ? "border-[#2db134]  border-[3px]" : "border-zinc-700"} mx-auto sm:mx-0`, {
-      "animate-background-shine bg-white dark:bg-[linear-gradient(110deg,#000103,45%,#1e2631,55%,#000103)] bg-[length:200%_100%] transition-colors":
-        exclusive,
-    })}>
+    className={cn(
+      `w-72 flex flex-col justify-between py-1 ${
+        popular ? "border-[#2db134]  border-[3px]" : "border-zinc-700"
+      } mx-auto sm:mx-0`,
+      {
+        "animate-background-shine bg-white dark:bg-[linear-gradient(110deg,#000103,45%,#1e2631,55%,#000103)] bg-[length:200%_100%] transition-colors":
+          exclusive,
+      }
+    )}
+  >
     <div>
       <CardHeader className="pb-8 pt-4">
         {isYearly && yearlyPrice && monthlyPrice ? (
           <div className="flex justify-between">
             <CardTitle className="text-zinc-700 dark:text-zinc-300 text-lg">{title}</CardTitle>
             <div
-              className={cn("px-2.5 rounded-xl h-fit text-sm py-1 bg-zinc-200 text-black dark:bg-zinc-800 dark:text-white", {
-                "bg-gradient-to-r from-orange-400 to-[#FAFE44] dark:text-black ": popular,
-              })}>
-              {monthlyPrice * 12 - yearlyPrice} VND
+              className={cn(
+                "px-2.5 rounded-xl h-fit text-sm py-1 bg-zinc-200 text-black dark:bg-zinc-800 dark:text-white",
+                {
+                  "bg-gradient-to-r from-orange-400 to-[#FAFE44] dark:text-black ": popular,
+                }
+              )}
+            >
+              - {(monthlyPrice * 12 - yearlyPrice).toLocaleString("vi-VN")} VND
             </div>
           </div>
         ) : (
           <CardTitle className="text-zinc-700 dark:text-zinc-300 text-lg">{title}</CardTitle>
         )}
         <div className="flex gap-0.5">
-          <h3 className="text-3xl font-bold">{yearlyPrice && isYearly ?  yearlyPrice + "VND" : monthlyPrice ? monthlyPrice  + "VND" : (monthlyPrice == 0 && yearlyPrice == 0) ? "Miễn Phí" : "Liên hệ"}</h3>
-          <span className="flex flex-col justify-end text-sm mb-1">{yearlyPrice && isYearly ? "/năm" : monthlyPrice ? "/tháng" : null}</span>
+          <h3 className="text-3xl font-bold">
+            {yearlyPrice && isYearly
+              ? `${yearlyPrice.toLocaleString("vi-VN")} VND`
+              : monthlyPrice
+              ? `${monthlyPrice.toLocaleString("vi-VN")} VND`
+              : monthlyPrice === 0 && yearlyPrice === 0
+              ? "Miễn Phí"
+              : "Liên hệ"}
+          </h3>
+          <span className="flex flex-col justify-end text-sm mb-1">
+            {yearlyPrice && isYearly ? "/năm" : monthlyPrice ? "/tháng" : null}
+          </span>
         </div>
         <CardDescription className="pt-1.5 h-12">{description}</CardDescription>
       </CardHeader>
@@ -80,13 +113,16 @@ const PricingCard = ({ isYearly, title, monthlyPrice, yearlyPrice, description, 
       </CardContent>
     </div>
     <CardFooter className="mt-2">
-      <Button className="relative inline-flex w-full items-center justify-center rounded-md bg-[#FAFE44] text-black hover:bg-[#FAFE44] hover:opacity-65 dark:bg-white px-6 font-medium  dark:text-black transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
-        <div className="absolute -inset-0.5 -z-10 rounded-lg bg-gradient-to-b from-[#c7d2fe] to-[#8678f9] opacity-75 blur" />
-        {actionLabel}
-      </Button>
+      <Link href={link || "/gia-ca"}>
+        <Button className="relative inline-flex w-full items-center justify-center rounded-md bg-[#FAFE44] text-black hover:bg-[#FAFE44] hover:opacity-65 dark:bg-white px-6 font-medium  dark:text-black transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
+          <div className="absolute -inset-0.5 -z-10 rounded-lg bg-gradient-to-b from-[#c7d2fe] to-[#8678f9] opacity-75 blur" />
+          {actionLabel}
+        </Button>
+      </Link>
     </CardFooter>
   </Card>
-)
+);
+
 
 const CheckItem = ({ text }: { text: string }) => (
   <div className="flex gap-2">
@@ -111,11 +147,12 @@ export default function Page() {
         "Hỗ trợ kỹ thuật qua email"
       ],
       actionLabel: "Dùng miễn phí",
+      link: "/gia-ca"
     },
     {
       title: "Nâng cao",
       monthlyPrice: 20000, // 150,000 VND per month
-      yearlyPrice: 400000, // 1,500,000 VND per year
+      yearlyPrice: 200000, // 1,500,000 VND per year
       description: "Phù hợp cho nông dân chuyên nghiệp và các đại lý nông sản",
       features: [
         "Phân tích thị trường chuyên sâu",
@@ -125,6 +162,7 @@ export default function Page() {
       ],
       actionLabel: "Đăng ký ngay",
       popular: true,
+      link: "/gia-ca"
     },
     {
       title: "Doanh nghiệp",
@@ -138,6 +176,7 @@ export default function Page() {
       ],
       actionLabel: "Liên hệ tư vấn",
       exclusive: true,
+      link: "/about"
     },
   ];
 

@@ -40,9 +40,9 @@ export default function NavBar() {
         <Link href="/pricing" className="text-lg font-medium" prefetch={false}>
           Nâng cấp
         </Link>
-        {/* <Link href="/about" className="text-lg font-medium" prefetch={false}>
+        <Link href="/about" className="text-lg font-medium" prefetch={false}>
           Về chúng tôi
-        </Link> */}
+        </Link>
       </nav>
 
       <div className="hidden xl:flex items-center space-x-4">
@@ -87,9 +87,9 @@ export default function NavBar() {
             <Link href="/pricing" className="text-lg font-medium" prefetch={false}>
               Nâng cấp
             </Link>
-            {/* <Link href="/about" className="text-lg font-medium" prefetch={false}>
+            <Link href="/about" className="text-lg font-medium" prefetch={false}>
               Về chúng tôi
-            </Link> */}
+            </Link>
           </nav>
           <div className="flex flex-col items-start space-y-4 mt-4">
             <Link href="/login" className="w-full">

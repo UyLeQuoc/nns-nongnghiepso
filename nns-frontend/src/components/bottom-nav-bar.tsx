@@ -12,7 +12,7 @@ export default function BottomNav() {
     { name: 'Giá cả', href: '/gia-ca', icon: DollarSign },
     { name: 'Đại lý', href: '/dai-ly', icon: Store },
     { name: 'Vật dụng', href: '/vat-dung', icon: Package },
-    { name: 'Tin tức', href: '/blogs', icon: Newspaper },
+    { name: 'Về chúng tôi', href: '/about', icon: Newspaper },
   ]
 
   return (
