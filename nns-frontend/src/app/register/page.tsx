@@ -236,7 +236,7 @@ interface ProductPreferenceProps {
   onRemovePreference: (index: number) => void
 }
 
-export function ProductPreference({
+function ProductPreference({
   index,
   preference,
   agriculturalProducts,
@@ -299,7 +299,7 @@ interface ProfileHeaderProps {
   }
 }
 
-export function ProfileHeader({ imagePreview, thumbnailPreview, agentData }: ProfileHeaderProps) {
+function ProfileHeader({ imagePreview, thumbnailPreview, agentData }: ProfileHeaderProps) {
   return (
     <Card className="relative w-full overflow-hidden mb-6">
       <div className="relative h-48 md:h-64 overflow-hidden bg-center">
