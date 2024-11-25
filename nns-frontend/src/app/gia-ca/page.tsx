@@ -168,12 +168,12 @@ export default function Page() {
                                             </span>
                                           </Link>
                                         </div>
-                                        <div className="flex justify-between items-center w-full sm:w-auto">
+                                        <div className="flex justify-between items-center w-full flex-col sm:flex-row sm:w-auto">
                                           <span className="text-gray-600 items-center flex sm:mr-4">
                                             <Calendar className="w-4 h-4 mr-1 text-green-600" />
-                                            <span className="truncate">{price.note}</span>
+                                            <span className="truncate text-sm">{price.note}</span>
                                           </span>
-                                          <span className="text-green-700 font-medium flex items-center">
+                                          <span className="text-xl sm:text-base text-green-700 font-medium flex items-center">
                                             {formatPrice(price.price)}
                                           </span>
                                         </div>

@@ -208,7 +208,7 @@ export default function AIChatPage() {
           onChange={handleInputChange}
           className="w-full p-4 rounded-full bg-white border border-gray-300 text-gray-800 placeholder-gray-500 focus:outline-none"
         />
-        <button onClick={handleQuestionSubmit} className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500"
+        <button onClick={handleQuestionSubmit} className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 z-50"
          disabled={submitLoading}
         >
           {submitLoading ? (

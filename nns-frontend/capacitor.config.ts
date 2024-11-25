@@ -2,7 +2,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'nns.frontend.app',
-  appName: 'nns-frontend',
+  appName: 'Nông Nghiệp Số',
   webDir: 'out',
   server: {
     androidScheme: 'https',
