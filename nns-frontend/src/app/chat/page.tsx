@@ -191,6 +191,7 @@ export default function AIChatPage() {
      
     } catch (error) {
       console.error("Error in handling question submission:", error);
+      setError("Vui lòng xử dụng bản website để tương tác AI");
     } finally {
     }
   };
